@@ -45,6 +45,11 @@ footer {
     color: black;
 } 
 
+.categories {
+    color: #f2f2f2;
+    text-decoration: none;
+}
+
 
 /* Create three unequal columns that floats next to each other */
 .column {

@@ -21,7 +21,23 @@
     <div class="row">
         <div class="column side">
             <h2>Side</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
+            <ul class="categories">
+                <a href="#">
+                    <li>Kategorie #1</li>
+                </a>
+                <a href="#">
+                    <li>Kategorie #2</li>
+                </a>
+                <a href="#">
+                    <li>Kategorie #3</li>
+                </a>
+                <a href="#">
+                    <li>Kategorie #4</li>
+                </a>
+                <a href="#">
+                    <li>Kategorie #5</li>
+                </a>
+            </ul>
         </div>
 
         <div class="column middle">
