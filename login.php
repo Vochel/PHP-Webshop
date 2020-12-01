@@ -71,12 +71,15 @@
                 echo "<p style='color: red;'>Fehler: <br> Es ist kein Nutzer mit dieser E-Mail vorhanden! Registriere dich um fortzufahren.</p>";
             } elseif (isset($_GET['e']) && $_GET['e'] == 1) {
                 echo "<p style='color: green;'>Registrierung erfolgreich! <br> Du kannst dich nun anmelden.</p>";
+            } elseif (isset($_GET['e']) && $_GET['e'] == 2) {
+                echo "<p style='color: green;'>Passwort erfolgreich geändert! <br> Du kannst dich nun anmelden.</p>";
             }
             ?>
             <form action="login.php" method="post">
                 <input class="" type="text" name="mail" placeholder="E-Mail" required />
                 <br>
                 <input class="" type="password" name="password" placeholder="Password" required />
+                <br>
                 <br>
                 <button class="" type="submit">Log In</button>
                 <br>

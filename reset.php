@@ -4,34 +4,69 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>Passwort reset</title>
+
+    <?php
+    if (isset($_POST["mail"]) && isset($_POST["pw"])) {
+        //Verbindung aufnehmen
+        $connection = mysqli_connect("", "root");
+
+        //Datenbank auswählen
+        mysqli_select_db($connection, "webshop");
+
+        //Abfrage Text
+        $sql = "update user set pw='" . $_POST["pw"] . "' where email='" . $_POST["mail"] . "'";
+
+        //SQL-Abfrage
+        $result = mysqli_query($connection, $sql);
+
+        //Anzahl der betroffenen Datensätze ermitteln
+        $num = mysqli_affected_rows($connection);
+
+        if ($num == 1) {
+            //Verbindung schließen
+            mysqli_close($connection);
+            header("Location: login.php?e=2");
+            exit;
+        } else {
+            //Verbindung schließen
+            mysqli_close($connection);
+            header("Location: reset.php?f=1");
+            exit;
+        }
+    } else {
+    ?>
 </head>
 
 <body>
 
     <div class="header">
-        <h1>PW reset</h1>
+        <h1>Passwort zurücksetzen</h1>
     </div>
 
     <div class="login">
         <center>
-            <form action="login.php" method="post">
-                <input type="text" name="hersteller" required size="20">
+            <span class="material-icons">
+                account_circle
+            </span>
+            <?php
+            if (isset($_GET['f']) && $_GET['f'] == 1) {
+                echo "<p style='color: red;'>Fehler: <br> Passwortänderung fehlgeschlagen.</p>";
+            }
+            ?>
+            <form action="reset.php" method="post">
+                <input type="text" name="mail" required placeholder="E-Mail" size="30">
                 <br>
-                <input type="text" name="typ" required size="20">
+                <input type="password" name="pw" required placeholder="neues Passwort" size="30">
                 <br>
-                <input type="text" name="gb" required size="20">
                 <br>
-                <input type="text" name="preis" required size="20">
-                <br>
-                <input type="text" name="artikelnummer" required size="20">
-                <br>
-                <input type="text" name="datum" required size="20">
-                <br>
-                <input type="submit" value="Daten absenden">
-                <input type="reset" value="Daten zurücksetzen">
+                <input type="submit" value="Passwort zurücksetzen">
                 <br>
             </form>
+            <br>
+            <p>Da kannst dich wieder erinnern? Zurück zum <a href="login.php">Log In</a></p>
+
         </center>
     </div>
 </body>
@@ -39,5 +74,8 @@
     <p>Copyright &copy; 2020 Brerik Webshops. All Rights Reserved</p>
 </footer>
 
+<?php
+    }
+?>
 
 </html>
