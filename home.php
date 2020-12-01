@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -9,7 +12,10 @@
 
 <body>
     <div class="header">
-        <h1>Herzlich Willkommen auf dem Webshop von Bruno und Erik!</h1>
+
+        <h1>Hallo <?php if (!empty($_SESSION['name'])) {
+                        echo $_SESSION['name'];
+                    } ?>, willkommen auf dem Webshop!</h1>
     </div>
 
     <div class="topnav">
