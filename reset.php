@@ -15,17 +15,23 @@
 
     <div class="login">
         <center>
-            <form action="home.php" method="post">
-                <input class="" type="text" name="u" placeholder="Username" required />
+            <form action="login.php" method="post">
+                <input type="text" name="hersteller" required size="20">
                 <br>
-                <input class="" type="password" name="p" placeholder="Password" required />
+                <input type="text" name="typ" required size="20">
                 <br>
-                <button class="" type="submit">Log In</button>
+                <input type="text" name="gb" required size="20">
+                <br>
+                <input type="text" name="preis" required size="20">
+                <br>
+                <input type="text" name="artikelnummer" required size="20">
+                <br>
+                <input type="text" name="datum" required size="20">
+                <br>
+                <input type="submit" value="Daten absenden">
+                <input type="reset" value="Daten zurücksetzen">
                 <br>
             </form>
-            <br>
-
-
         </center>
     </div>
 </body>

@@ -69,6 +69,8 @@
                 echo "<p style='color: red;'>Fehler: <br> E-Mail und Passwort stimmen nicht überein!</p>";
             } elseif (isset($_GET['f']) && $_GET['f'] == 2) {
                 echo "<p style='color: red;'>Fehler: <br> Es ist kein Nutzer mit dieser E-Mail vorhanden! Registriere dich um fortzufahren.</p>";
+            } elseif (isset($_GET['e']) && $_GET['e'] == 1) {
+                echo "<p style='color: green;'>Registrierung erfolgreich! <br> Du kannst dich nun anmelden.</p>";
             }
             ?>
             <form action="login.php" method="post">
