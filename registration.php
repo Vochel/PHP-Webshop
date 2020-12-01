@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css">
-    <title></title>
+    <title>Registrierung</title>
 </head>
 
 <body>

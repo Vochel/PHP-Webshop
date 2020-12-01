@@ -56,7 +56,7 @@
 
 </body>
 <footer>
-    <p>Footer</p>
+    <p>Copyright &copy; 2020 Brerik Webshops. All Rights Reserved</p>
 </footer>
 
 </html>

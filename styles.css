@@ -14,6 +14,9 @@ footer {
   background-color:  #474B4F;
   text-align: center;
   padding: 10px;
+  position: absolute; 
+  bottom: 0;
+  width: 100%;
 }
 
 .header {
@@ -72,5 +75,9 @@ footer {
   content: "";
   display: table;
   clear: both;
+}
+
+.login {
+  margin-top: 20px;
 }
 
