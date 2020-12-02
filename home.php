@@ -8,6 +8,14 @@ session_start();
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css">
     <title>Willkommen</title>
+
+    <?php
+    if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok") {
+        # code...
+    } else {
+        header("Location: login.php");
+    }
+    ?>
 </head>
 
 <body>
@@ -16,6 +24,9 @@ session_start();
         <h1>Hallo <?php if (!empty($_SESSION['name'])) {
                         echo $_SESSION['name'];
                     } ?>, willkommen auf dem Webshop!</h1>
+        <form action="warenkorb.php">
+            <input type="submit" value="Zum Warenkorb" class="btn">
+        </form>
     </div>
 
     <div class="topnav">
