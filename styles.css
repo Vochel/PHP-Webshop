@@ -23,6 +23,12 @@ a {
   color: #fff;
 }
 
+ul {
+  list-style-type: none;
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
 .header {
     background-color: #474B4F;
     text-align: center;
@@ -38,7 +44,7 @@ a {
   
 /* Navbar links */
 .topnav a {
-    float: left;
+    float: right;
     display: block;
     color: #f2f2f2;
     text-align: center;
@@ -62,16 +68,20 @@ a {
 .column {
   float: left;
   padding: 10px;
+  height: 100%;
 }
 
 /* Left and right column */
 .column.side {
-  width: 25%;
+  width: 15%;
+  border-right: 2px solid #333;
+  min-height: 100%;
+
 }
 
 /* Middle column */
 .column.middle {
-  width: 70%;
+  width: 80%;
 }
 
 /* Clear floats after the columns */
@@ -82,17 +92,16 @@ a {
 }
 
 .login {
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .btn {
-  background-color: #4CAF50;
+  background-color:  #222629;
   border: none;
   color: white;
-  padding: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  text-decoration: underline;
+}
+
+.btn:hover{
+  background-color:  #333;
 }

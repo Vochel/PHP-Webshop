@@ -8,10 +8,82 @@ session_start();
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css">
     <title>Willkommen</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <?php
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok") {
-        # code...
+        //Verbindung Datenbank
+        $connection = mysqli_connect("", "root");
+
+        //Datenbank auswählen
+        mysqli_select_db($connection, "webshop");
+
+        //Abfrage Text
+        $sql_kat = "select name from kategorie";
+
+        //SQL-Abfrage
+        $result = mysqli_query($connection, $sql_kat);
+
+        //Anzahl der Datensätze ermitteln
+        $num = mysqli_num_rows($result);
+
+        //Array aller Kategorien & Produkte
+        $kategorien = array();
+        $products = array();
+        $j = 0;
+
+        while ($dsatz = mysqli_fetch_assoc($result)) {
+            $kategorien[$j] = $dsatz['name'];
+            $j++;
+        }
+
+
+        if (isset($_POST['kategorie'])) {
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+
+            //Abfrage Text
+            $sql_kat = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
+
+            //SQL-Abfrage
+            $result = mysqli_query($connection, $sql_kat);
+
+            //Anzahl der Datensätze ermitteln
+            $num = mysqli_num_rows($result);
+
+            $kat_nr;
+
+            if ($num == 1) {
+                $dsatz = mysqli_fetch_assoc($result);
+                $kat_nr = $dsatz['nummer'];
+
+                //Abfrage Text
+                $sql_prod = "select * from product where fk_kat='" . $kat_nr . "'";
+
+                //SQL-Abfrage
+                $result = mysqli_query($connection, $sql_prod);
+
+                //Anzahl der Datensätze ermitteln
+                $num = mysqli_num_rows($result);
+
+                $o = 0;
+
+                while ($dsatz = mysqli_fetch_assoc($result)) {
+                    $products[$o] = $dsatz;
+                    $o++;
+                }
+            } else {
+                echo "Fehler beim abfragen der Kategorienummer!";
+            }
+
+
+
+            mysqli_close($connection);
+
+            echo "<pre>";
+            print_r($products);
+            echo "</pre>";
+        }
     } else {
         header("Location: login.php");
     }
@@ -24,49 +96,45 @@ session_start();
         <h1>Hallo <?php if (!empty($_SESSION['name'])) {
                         echo $_SESSION['name'];
                     } ?>, willkommen auf dem Webshop!</h1>
-        <form action="warenkorb.php">
-            <input type="submit" value="Zum Warenkorb" class="btn">
-        </form>
     </div>
 
     <div class="topnav">
-        <a href="#">Thema #1</a>
-        <a href="#">Thema #2</a>
-        <a href="#">Thema #3</a>
+        <a href="logout.php">Logout</a>
+        <a href="warenkorb.php">Warenkorb</a>
     </div>
 
     <div class="row">
         <div class="column side">
-            <h2>Side</h2>
-            <ul class="categories">
-                <a href="#">
-                    <li>Kategorie #1</li>
-                </a>
-                <a href="#">
-                    <li>Kategorie #2</li>
-                </a>
-                <a href="#">
-                    <li>Kategorie #3</li>
-                </a>
-                <a href="#">
-                    <li>Kategorie #4</li>
-                </a>
-                <a href="#">
-                    <li>Kategorie #5</li>
-                </a>
-            </ul>
+            <h2>Kategorien</h2>
+            <?php
+            if (!empty($kategorien)) {
+                echo "<ul class='categories'>";
+                echo "<form action='home.php' method='post'>";
+                for ($i = 0; $i < count($kategorien); $i++) {
+                    echo "<input class='btn' type='submit' name='kategorie' value='" . $kategorien[$i] . "'> <br>";
+                }
+                echo "</form>";
+                echo "</ul>";
+            } else {
+                echo "Leider keine Kategorien gefunden";
+            }
+            ?>
         </div>
 
         <div class="column middle">
-            <h2>Main Content</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus
-                venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget
-                aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor
-                sed accumsan convallis.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus
-                venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget
-                aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor
-                sed accumsan convallis.</p>
+            <center>
+                <?php
+                if (isset($_POST['kategorie'])) {
+                    echo "<p>Deine Kategorie ist " . $_POST['kategorie'] . "</p>";
+                } else {
+                    echo "<span class='material-icons'>
+                        error_outline
+                    </span>
+                    <p>Wähle eine Kategorie!</p>";
+                }
+                ?>
+
+            </center>
         </div>
     </div>
 
