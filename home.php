@@ -12,6 +12,15 @@ session_start();
 
     <?php
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok") {
+
+        if (isset($_GET['e']) && $_GET['e'] == 1) {
+            $keys = array_keys($_POST);
+            for ($i = 0; $i < count($keys); $i++) {
+                $_SESSION['warenkorb'][$keys[$i]] += $_POST[$keys[$i]];
+            }
+        }
+
+
         //Verbindung Datenbank
         $connection = mysqli_connect("", "root");
 
@@ -79,11 +88,15 @@ session_start();
 
 
             mysqli_close($connection);
-
-            echo "<pre>";
-            print_r($products);
-            echo "</pre>";
         }
+
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
     } else {
         header("Location: login.php");
     }
@@ -122,19 +135,30 @@ session_start();
         </div>
 
         <div class="column middle">
-            <center>
-                <?php
-                if (isset($_POST['kategorie'])) {
-                    echo "<p>Deine Kategorie ist " . $_POST['kategorie'] . "</p>";
-                } else {
-                    echo "<span class='material-icons'>
+            <?php
+            if (!empty($products)) {
+                echo "<h2><u>" . $_POST['kategorie'] . "</u></h2>";
+                echo "<form action='home.php?e=1' method='post'>";
+                echo "<table border='1'> <tr class='table_head'><td>Marke</td><td>Herkunft</td><td>Preis</td><td>Anzahl</td></tr>";
+
+                $prods = array();
+
+                foreach ($products as $item) {
+                    foreach ($item as $key => $value) {
+                        $prods[$key] = $value;
+                    }
+                    echo "<tr><td> " . $prods['Name'] . " </td><td> " . $prods['Origin'] . "</td><td> " . $prods['Price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td></tr>";
+                }
+                echo "</table><br>";
+                echo "<input type='submit' value='In den Warenkorb'>";
+                echo "</form>";
+            } else {
+                echo "<center><span class='material-icons'>
                         error_outline
                     </span>
-                    <p>Wähle eine Kategorie!</p>";
-                }
-                ?>
-
-            </center>
+                    <p>Wähle eine Kategorie!</p></center>";
+            }
+            ?>
         </div>
     </div>
 
