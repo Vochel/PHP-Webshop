@@ -14,9 +14,20 @@ session_start();
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok") {
 
         if (isset($_GET['e']) && $_GET['e'] == 1) {
-            $keys = array_keys($_POST);
-            for ($i = 0; $i < count($keys); $i++) {
-                $_SESSION['warenkorb'][$keys[$i]] += $_POST[$keys[$i]];
+            foreach ($_POST as $key => $value) {
+                if ($value == "") {
+                    $value = 0;
+                }
+                echo "key" . $key;
+                echo "value" . $value;
+                if (!isset($_SESSION['warenkorb'])) {
+                    echo "   kein Array <br> ";
+                    $_SESSION['warenkorb'] = $_POST;
+                } elseif (array_key_exists($key, $_SESSION['warenkorb'])) {
+                    @$_SESSION['warenkorb'][$key] += $value;
+                } else {
+                    $_SESSION['warenkorb'] += [$key => $value];
+                }
             }
         }
 
