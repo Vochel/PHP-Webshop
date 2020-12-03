@@ -18,10 +18,7 @@ session_start();
                 if ($value == "") {
                     $value = 0;
                 }
-                echo "key" . $key;
-                echo "value" . $value;
                 if (!isset($_SESSION['warenkorb'])) {
-                    echo "   kein Array <br> ";
                     $_SESSION['warenkorb'] = $_POST;
                 } elseif (array_key_exists($key, $_SESSION['warenkorb'])) {
                     @$_SESSION['warenkorb'][$key] += $value;
@@ -101,13 +98,13 @@ session_start();
             mysqli_close($connection);
         }
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
 
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_SESSION);
+        // echo "</pre>";
     } else {
         header("Location: login.php");
     }
@@ -168,6 +165,10 @@ session_start();
                         error_outline
                     </span>
                     <p>Wähle eine Kategorie!</p></center>";
+
+                if (isset($_GET['e']) && $_GET['e'] == 1) {
+                    echo "<center><p style='color: green;'>Deine gewählten Artikel wurden erfolgreich dem Warenkorb hinzugefügt!</p></center>";
+                }
             }
             ?>
         </div>
