@@ -7,11 +7,12 @@ session_start();
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css">
-    <title>Willkommen</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Willkommen</title>
+
 
     <?php
-    if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok") {
+    if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
 
         if (isset($_GET['e']) && $_GET['e'] == 1) {
             foreach ($_POST as $key => $value) {
@@ -102,9 +103,20 @@ session_start();
         // print_r($_POST);
         // echo "</pre>";
 
+
+        // echo "<pre>";
+        // print_r($kategorien);
+        // echo "</pre>";
+
+        // echo "<pre>";
+        // print_r($products);
+        // echo "</pre>";
+
         // echo "<pre>";
         // print_r($_SESSION);
         // echo "</pre>";
+    } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "admin") {
+        header("Location: admin.php");
     } else {
         header("Location: login.php");
     }
@@ -157,6 +169,8 @@ session_start();
                     }
                     echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td></tr>";
                 }
+
+
                 echo "</table><br>";
                 echo "<input type='submit' value='In den Warenkorb'>";
                 echo "</form>";

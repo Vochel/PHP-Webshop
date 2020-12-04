@@ -16,6 +16,11 @@ session_start();
         isset($_SESSION['warenkorb'])
     ) {
 
+
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
+
         $adresse = array();
 
         //Verbindung Datenbank

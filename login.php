@@ -33,6 +33,7 @@ session_start();
                 $_SESSION['name'] = $dsatz["fname"];
                 $_SESSION['user_nr'] = $dsatz["user_nr"];
                 $_SESSION['login'] = "ok";
+                $_SESSION['user_type'] = $dsatz["rolle"];
 
                 //Verbindung schließen
                 mysqli_close($connection);

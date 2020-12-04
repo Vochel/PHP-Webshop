@@ -12,6 +12,7 @@ session_start();
 
     <?php
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && isset($_SESSION['warenkorb'])) {
+
         $products = array();
         $j = 0;
 
@@ -33,6 +34,7 @@ session_start();
                 $j++;
             }
         }
+
 
 
         //Verbindung trennen
