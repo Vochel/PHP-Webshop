@@ -31,6 +31,7 @@ session_start();
             if ($dsatz["email"] == $_POST["mail"] && $dsatz["pw"] == $_POST["password"]) {
 
                 $_SESSION['name'] = $dsatz["fname"];
+                $_SESSION['user_nr'] = $dsatz["user_nr"];
                 $_SESSION['login'] = "ok";
 
                 //Verbindung schließen

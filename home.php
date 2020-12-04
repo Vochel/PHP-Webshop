@@ -155,7 +155,7 @@ session_start();
                     foreach ($item as $key => $value) {
                         $prods[$key] = $value;
                     }
-                    echo "<tr><td> " . $prods['Name'] . " </td><td> " . $prods['Origin'] . "</td><td> " . $prods['Price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td></tr>";
+                    echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td></tr>";
                 }
                 echo "</table><br>";
                 echo "<input type='submit' value='In den Warenkorb'>";

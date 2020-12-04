@@ -75,10 +75,10 @@ session_start();
                 foreach ($products as $item) {
                     foreach ($item as $key => $value) {
                     }
-                    echo "<tr><td> " . $item['Name'] . " </td><td> " . $_SESSION['warenkorb'][$item['Pr_Nummer']] . " Kisten</td><td>" . $item['Price'] . " € </td></tr>";
+                    echo "<tr><td> " . $item['name'] . " </td><td> " . $_SESSION['warenkorb'][$item['Pr_Nummer']] . " Kisten</td><td>" . $item['price'] . " € </td></tr>";
 
                     $gesamt_anzahl += $_SESSION['warenkorb'][$item['Pr_Nummer']];
-                    $gesamt_preis += ($item['Price'] * $_SESSION['warenkorb'][$item['Pr_Nummer']]);
+                    $gesamt_preis += ($item['price'] * $_SESSION['warenkorb'][$item['Pr_Nummer']]);
                 }
                 echo "<tr class='table_bottom'><td>Gesamt</td><td>$gesamt_anzahl Kisten</td><td>$gesamt_preis €</td></tr>";
                 echo "</table><br>";

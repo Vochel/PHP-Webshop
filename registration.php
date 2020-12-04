@@ -16,7 +16,7 @@
         mysqli_select_db($connection, "webshop");
 
         //Abfrage Text
-        $sql = "insert user (email, pw, name, fname, bdate, postcode, place, street, nr) values ('" . $_POST["mail"] . "', '" . $_POST["pw"] . "', '" . $_POST["name"] . "', '" . $_POST["fname"] . "', '" . $_POST["bdate"] . "', '" . $_POST["postcode"] . "', '" . $_POST["place"] . "', '" . $_POST["street"] . "', '" . $_POST["nr"] . "')";
+        $sql = "insert user (email, pw, name, fname, bdate, postcode, place, street, h_nr) values ('" . $_POST["mail"] . "', '" . $_POST["pw"] . "', '" . $_POST["name"] . "', '" . $_POST["fname"] . "', '" . $_POST["bdate"] . "', '" . $_POST["postcode"] . "', '" . $_POST["place"] . "', '" . $_POST["street"] . "', '" . $_POST["nr"] . "')";
 
         //SQL-Abfrage
         $result = mysqli_query($connection, $sql);
