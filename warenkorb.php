@@ -35,6 +35,9 @@ session_start();
             }
         }
 
+        // echo "<pre>";
+        // print_r($products);
+        // echo "</pre>";
 
 
         //Verbindung trennen
@@ -75,12 +78,12 @@ session_start();
                 $gesamt_anzahl = 0;
 
                 foreach ($products as $item) {
-                    foreach ($item as $key => $value) {
-                    }
-                    echo "<tr><td> " . $item['name'] . " </td><td> " . $_SESSION['warenkorb'][$item['Pr_Nummer']] . " Kisten</td><td>" . $item['price'] . " € </td></tr>";
+                    if ($_SESSION['warenkorb'][$item['Pr_Nummer']] != 0) {
+                        echo "<tr><td> " . $item['name'] . " </td><td> " . $_SESSION['warenkorb'][$item['Pr_Nummer']] . " Kisten</td><td>" . $item['price'] . " € </td></tr>";
 
-                    $gesamt_anzahl += $_SESSION['warenkorb'][$item['Pr_Nummer']];
-                    $gesamt_preis += ($item['price'] * $_SESSION['warenkorb'][$item['Pr_Nummer']]);
+                        $gesamt_anzahl += $_SESSION['warenkorb'][$item['Pr_Nummer']];
+                        $gesamt_preis += ($item['price'] * $_SESSION['warenkorb'][$item['Pr_Nummer']]);
+                    }
                 }
                 echo "<tr class='table_bottom'><td>Gesamt</td><td>$gesamt_anzahl Kisten</td><td>$gesamt_preis €</td></tr>";
                 echo "</table><br>";
@@ -94,7 +97,7 @@ session_start();
 
 </body>
 <footer>
-    <p>Copyright &copy; 2020 Brero Webshops. All Rights Reserved</p>
+    <p>Copyright &copy; 2020 Brerik Webshops. All Rights Reserved</p>
 </footer>
 
 

@@ -69,6 +69,14 @@ session_start();
                 Falls nicht nehme hier Änderungen vor!
             </h3>
 
+            <?php
+
+            if (isset($_COOKIE['name']) || isset($_COOKIE['postcode']) || isset($_COOKIE['place']) || isset($_COOKIE['street']) || isset($_COOKIE['nr'])) {
+                echo "<p style='color: green;'>Wir haben uns deine vorherige Adresse gemerkt! Bitte prüfe sie erneut.</p>";
+            }
+
+            ?>
+
             <form action="bestellung.php" method="post">
                 <table>
                     <tr>
@@ -86,27 +94,47 @@ session_start();
                 <table border='1'>
                     <tr>
                         <td>Name an der Klingel</td>
-                        <td> <input type="text" name="name" required value="<?php echo $adresse['name']; ?>" size="30">
+                        <td> <input type="text" name="name" required value="<?php if (isset($_COOKIE['name'])) {
+                                                                                echo $_COOKIE['name'];
+                                                                            } else {
+                                                                                echo $adresse['name'];
+                                                                            } ?>" size="30">
                         </td>
                     </tr>
                     <tr>
                         <td>Postleitzahl</td>
-                        <td><input type="text" name="postcode" required value="<?php echo $adresse['postcode']; ?>" size="30">
+                        <td><input type="text" name="postcode" required value="<?php if (isset($_COOKIE['postcode'])) {
+                                                                                    echo $_COOKIE['postcode'];
+                                                                                } else {
+                                                                                    echo $adresse['postcode'];
+                                                                                } ?>" size="30">
                         </td>
                     </tr>
                     <tr>
                         <td>Ort</td>
-                        <td><input type="text" name="place" required value="<?php echo $adresse['place']; ?>" size="30">
+                        <td><input type="text" name="place" required value="<?php if (isset($_COOKIE['place'])) {
+                                                                                echo $_COOKIE['place'];
+                                                                            } else {
+                                                                                echo $adresse['place'];
+                                                                            } ?>" size="30">
                         </td>
                     </tr>
                     <tr>
                         <td>Straße</td>
-                        <td><input type="text" name="street" required value="<?php echo $adresse['street']; ?>" size="30">
+                        <td><input type="text" name="street" required value="<?php if (isset($_COOKIE['street'])) {
+                                                                                    echo $_COOKIE['street'];
+                                                                                } else {
+                                                                                    echo $adresse['street'];
+                                                                                } ?>" size="30">
                         </td>
                     </tr>
                     <tr>
                         <td>Hausnummer</td>
-                        <td><input type="text" name="nr" required value="<?php echo $adresse['h_nr']; ?>" size="30">
+                        <td><input type="text" name="nr" required value="<?php if (isset($_COOKIE['nr'])) {
+                                                                                echo $_COOKIE['nr'];
+                                                                            } else {
+                                                                                echo $adresse['h_nr'];
+                                                                            } ?>" size="30">
                         </td>
                     </tr>
                 </table>

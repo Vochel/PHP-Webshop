@@ -178,7 +178,7 @@ session_start();
 
 
                 echo "</table><br>";
-                echo "<input type='submit' value='In den Warenkorb'>";
+                echo "<input class='kasse' style='border: none;' type='submit' value='In den Warenkorb'>";
                 echo "</form>";
             } else {
                 echo "<center><span class='material-icons'>

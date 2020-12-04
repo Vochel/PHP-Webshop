@@ -14,13 +14,21 @@ session_start();
         isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" &&
         isset($_SESSION['warenkorb']) && $_SESSION['user_type'] = "user"
     ) {
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
 
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
+        if (isset($_POST['adresse']) && $_POST['adresse'] == "geändert") {
+            setcookie("name", $_POST['name'], time() + 9999999);
+            setcookie("postcode", $_POST['postcode'], time() + 9999999);
+            setcookie("place", $_POST['place'], time() + 9999999);
+            setcookie("street", $_POST['street'], time() + 9999999);
+            setcookie("nr", $_POST['nr'], time() + 9999999);
+        }
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
+
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
     } else {
         header("Location: login.php");
     }
