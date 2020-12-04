@@ -12,11 +12,6 @@ session_start();
 
     <?php
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && isset($_SESSION['warenkorb'])) {
-
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
-
         $products = array();
         $j = 0;
 
@@ -39,9 +34,6 @@ session_start();
             }
         }
 
-        echo "<pre>";
-        print_r($products);
-        echo "</pre>";
 
         //Verbindung trennen
         mysqli_close($connection);
@@ -75,6 +67,16 @@ session_start();
             </span><p style='color: green;'>Dein Warenkorb ist leer!<br> Füge neue Produkte hinzu, um diese zu bestellen.</p>";
             } else {
                 echo "<p style='color: green;'>Dein Warenkorb ist gefüllt!.</p>";
+                echo "<table border='1'> <tr class='table_head'><td>Produkt</td><td>Preis</td><td>Anzahl</td></tr>";
+
+                foreach ($products as $item) {
+                    foreach ($item as $key => $value) {
+                    }
+                    echo "<tr><td> " . $item['Name'] . " </td><td> " . $item['Price'] . " € </td><td>" . $_SESSION['warenkorb'][$item['Pr_Nummer']] . "</td></tr>";
+                }
+                echo "<tr class='table_bottom'><td>Anzahl</td></tr>";
+                echo "</table><br>";
+                echo "";
             }
             ?>
         </center>
