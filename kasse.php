@@ -13,13 +13,17 @@ session_start();
     <?php
     if (
         isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" &&
-        isset($_SESSION['warenkorb'])
+        isset($_SESSION['warenkorb']) && $_SESSION['user_type'] = "user"
     ) {
 
 
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_SESSION);
+        // echo "</pre>";
+
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
 
         $adresse = array();
 
@@ -65,7 +69,20 @@ session_start();
                 Falls nicht nehme hier Änderungen vor!
             </h3>
 
-            <form action="bestellung.php" methd="post">
+            <form action="bestellung.php" method="post">
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" id="rechnung" name="adresse" value="gleich" required>
+                            <label for="rechnung">Lieferadresse = Rechnungsadresse</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="kreditkarte" name="adresse" value="geändert" required>
+                            <label for="kreditkarte">andere Lieferadresse</label>
+                        </td>
+                    </tr>
+                </table>
+
                 <table border='1'>
                     <tr>
                         <td>Name an der Klingel</td>
@@ -74,8 +91,7 @@ session_start();
                     </tr>
                     <tr>
                         <td>Postleitzahl</td>
-                        <td><input type="text" name="postcode" required value="<?php echo $adresse['postcode']; ?>"
-                                size="30">
+                        <td><input type="text" name="postcode" required value="<?php echo $adresse['postcode']; ?>" size="30">
                         </td>
                     </tr>
                     <tr>
@@ -85,8 +101,7 @@ session_start();
                     </tr>
                     <tr>
                         <td>Straße</td>
-                        <td><input type="text" name="street" required value="<?php echo $adresse['street']; ?>"
-                                size="30">
+                        <td><input type="text" name="street" required value="<?php echo $adresse['street']; ?>" size="30">
                         </td>
                     </tr>
                     <tr>
@@ -96,7 +111,30 @@ session_start();
                     </tr>
                 </table>
                 <br>
-                <input type="submit" value="Kostenpflichtig bestellen">
+
+                <h3>Wähle eine Zahlungsmethode:</h3>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" id="rechnung" name="zahlungsmethode" value="Rechnung" required>
+                            <label for="rechnung">Rechnung</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="kreditkarte" name="zahlungsmethode" value="Kreditkarte" required>
+                            <label for="kreditkarte">Kreditkarte</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="vorkasse" name="zahlungsmethode" value="Vorkasse" required>
+                            <label for="vorkasse">Vorkasse</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="paypal" name="zahlungsmethode" value="PayPal" required>
+                            <label for="paypal">PayPal</label>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <input class="kasse" style="border: none;" type="submit" value="Kostenpflichtig bestellen">
             </form>
         </center>
     </div>
@@ -105,7 +143,7 @@ session_start();
 
 </body>
 <footer>
-    <p>Copyright &copy; 2020 Brerik Webshops. All Rights Reserved</p>
+    <p>Copyright &copy; 2020 Brero Webshops. All Rights Reserved</p>
 </footer>
 
 

@@ -14,6 +14,11 @@ session_start();
     <?php
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
 
+
+        if (isset($_POST['bestellt'])) {
+            unset($_SESSION['warenkorb']);
+        }
+
         if (isset($_GET['e']) && $_GET['e'] == 1) {
             foreach ($_POST as $key => $value) {
                 if ($value == "") {
@@ -115,6 +120,7 @@ session_start();
         // echo "<pre>";
         // print_r($_SESSION);
         // echo "</pre>";
+
     } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "admin") {
         header("Location: admin.php");
     } else {
@@ -191,7 +197,7 @@ session_start();
 
 </body>
 <footer>
-    <p>Copyright &copy; 2020 Brerik Webshops. All Rights Reserved</p>
+    <p>Copyright &copy; 2020 Brero Webshops. All Rights Reserved</p>
 </footer>
 
 </html>

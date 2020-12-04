@@ -97,7 +97,7 @@ session_start();
     </div>
 </body>
 <footer>
-    <p>Copyright &copy; 2020 Brerik Webshops. All Rights Reserved</p>
+    <p>Copyright &copy; 2020 Brero Webshops. All Rights Reserved</p>
 </footer>
 
 <?php
