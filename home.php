@@ -14,11 +14,12 @@ session_start();
     <?php
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
 
-
+        //löscht Warenkorb nach Bestellung
         if (isset($_POST['bestellt'])) {
             unset($_SESSION['warenkorb']);
         }
 
+        //fügt Elemente dem Warenkorb hinzu
         if (isset($_GET['e']) && $_GET['e'] == 1) {
             foreach ($_POST as $key => $value) {
                 if ($value == "") {
@@ -53,6 +54,7 @@ session_start();
         //Array aller Kategorien & Produkte
         $kategorien = array();
         $products = array();
+        $ratings = array();
         $j = 0;
 
         while ($dsatz = mysqli_fetch_assoc($result)) {
@@ -75,6 +77,7 @@ session_start();
             $num = mysqli_num_rows($result);
 
             $kat_nr;
+            $prod_nr = array();
 
             if ($num == 1) {
                 $dsatz = mysqli_fetch_assoc($result);
@@ -93,16 +96,38 @@ session_start();
 
                 while ($dsatz = mysqli_fetch_assoc($result)) {
                     $products[$o] = $dsatz;
+
+                    //Abfrage Text
+                    $sql = "select * from komments where fk_product='" . $products[$o]['Pr_Nummer'] . "'";
+
+                    //SQL-Abfrage
+                    $result = mysqli_query($connection, $sql);
+
+                    //Anzahl der Datensätze ermitteln
+                    $num = mysqli_num_rows($result);
+
+                    $k = 0;
+
+                    //schreibt in ratings alle beertungen der prcute mit key Pr_Numemr und value rating
+                    while ($dsatz = mysqli_fetch_assoc($result)) {
+                        $ratings[$k] = [$products[$o]['Pr_Nummer'] => $dsatz['rating']];
+                        $k++;
+                    }
                     $o++;
                 }
             } else {
                 echo "Fehler beim abfragen der Kategorienummer!";
             }
-
-
-
-            mysqli_close($connection);
         }
+
+        mysqli_close($connection);
+
+        // function bewertung($Pr_Nummer)
+        // {
+        //     foreach ($ratings as $rat => $value) {
+        //         # code...
+        //     }
+        // }
 
         // echo "<pre>";
         // print_r($_POST);
@@ -115,6 +140,10 @@ session_start();
 
         // echo "<pre>";
         // print_r($products);
+        // echo "</pre>";
+
+        // echo "<pre>";
+        // print_r($ratings);
         // echo "</pre>";
 
         // echo "<pre>";
@@ -140,6 +169,7 @@ session_start();
     <div class="topnav">
         <a href="logout.php">Logout</a>
         <a href="warenkorb.php">Warenkorb</a>
+        <a href="ratings.php">Produkte bewerten</a>
     </div>
 
     <div class="row">
@@ -165,7 +195,7 @@ session_start();
             if (!empty($products)) {
                 echo "<h2><u>" . $_POST['kategorie'] . "</u></h2>";
                 echo "<form action='home.php?e=1' method='post'>";
-                echo "<table border='1'> <tr class='table_head'><td>Marke</td><td>Herkunft</td><td>Preis pro Kiste</td><td>Anzahl</td></tr>";
+                echo "<table border='1'> <tr class='table_head'><td>Marke</td><td>Herkunft</td><td>Preis pro Kiste</td><td>Anzahl</td><td>Bewertungen</td></tr>";
 
                 $prods = array();
 
@@ -173,7 +203,7 @@ session_start();
                     foreach ($item as $key => $value) {
                         $prods[$key] = $value;
                     }
-                    echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td></tr>";
+                    echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td><td>noch keine bewertungen</td></tr>";
                 }
 
 
