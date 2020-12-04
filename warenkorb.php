@@ -66,17 +66,23 @@ session_start();
                 error_outline
             </span><p style='color: green;'>Dein Warenkorb ist leer!<br> Füge neue Produkte hinzu, um diese zu bestellen.</p>";
             } else {
-                echo "<p style='color: green;'>Dein Warenkorb ist gefüllt!.</p>";
-                echo "<table border='1'> <tr class='table_head'><td>Produkt</td><td>Preis</td><td>Anzahl</td></tr>";
+                echo "<h3>Diese Produkte befinden sich aktuell in deinem Warenkorb:</h3>";
+                echo "<table border='1'> <tr class='table_head'><td>Produkt</td><td>Anzahl</td><td>Preis pro Kiste</td></tr>";
+
+                $gesamt_preis = 0;
+                $gesamt_anzahl = 0;
 
                 foreach ($products as $item) {
                     foreach ($item as $key => $value) {
                     }
-                    echo "<tr><td> " . $item['Name'] . " </td><td> " . $item['Price'] . " € </td><td>" . $_SESSION['warenkorb'][$item['Pr_Nummer']] . "</td></tr>";
+                    echo "<tr><td> " . $item['Name'] . " </td><td> " . $_SESSION['warenkorb'][$item['Pr_Nummer']] . " Kisten</td><td>" . $item['Price'] . " € </td></tr>";
+
+                    $gesamt_anzahl += $_SESSION['warenkorb'][$item['Pr_Nummer']];
+                    $gesamt_preis += ($item['Price'] * $_SESSION['warenkorb'][$item['Pr_Nummer']]);
                 }
-                echo "<tr class='table_bottom'><td>Anzahl</td></tr>";
+                echo "<tr class='table_bottom'><td>Gesamt</td><td>$gesamt_anzahl Kisten</td><td>$gesamt_preis €</td></tr>";
                 echo "</table><br>";
-                echo "";
+                echo "<a class='kasse' href='kasse.php'>Zur Kasse</a>";
             }
             ?>
         </center>

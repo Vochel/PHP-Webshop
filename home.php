@@ -147,7 +147,7 @@ session_start();
             if (!empty($products)) {
                 echo "<h2><u>" . $_POST['kategorie'] . "</u></h2>";
                 echo "<form action='home.php?e=1' method='post'>";
-                echo "<table border='1'> <tr class='table_head'><td>Marke</td><td>Herkunft</td><td>Preis</td><td>Anzahl</td></tr>";
+                echo "<table border='1'> <tr class='table_head'><td>Marke</td><td>Herkunft</td><td>Preis pro Kiste</td><td>Anzahl</td></tr>";
 
                 $prods = array();
 
