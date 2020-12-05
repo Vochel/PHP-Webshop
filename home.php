@@ -120,14 +120,34 @@ session_start();
             }
         }
 
+        //schließt Datenbankverbindung
         mysqli_close($connection);
 
-        // function bewertung($Pr_Nummer)
-        // {
-        //     foreach ($ratings as $rat => $value) {
-        //         # code...
-        //     }
-        // }
+        //ermittelt den Durschnitt aller Bewertungen einer Produkts
+        function bewertung($Pr_Nummer, $ratings)
+        {
+            $bewertung = 0.0;
+            $anzahl = 0.0;
+
+            foreach ($ratings as $key => $value) {
+                foreach ($ratings[$key] as $rat => $value) {
+                    if ($rat == $Pr_Nummer) {
+                        $bewertung += $value;
+                        $anzahl++;
+                    }
+                }
+            }
+            //checkt ob bereits Bewertungen vorhanden sind
+            if ($anzahl == 0) {
+                $ergebnis = "noch keine Bewertungen vorhanden";
+            } else {
+                $durch = $bewertung / $anzahl;
+                $ergebnis = "" . $durch . " &#9733;";
+            }
+
+            //liefert Ergebnis zurück
+            return $ergebnis;
+        }
 
         // echo "<pre>";
         // print_r($_POST);
@@ -203,7 +223,8 @@ session_start();
                     foreach ($item as $key => $value) {
                         $prods[$key] = $value;
                     }
-                    echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td><td>noch keine bewertungen</td></tr>";
+                    echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td>";
+                    echo "<td>" . bewertung($prods['Pr_Nummer'], $ratings) . "</td></tr>";
                 }
 
 
