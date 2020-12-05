@@ -46,18 +46,17 @@ session_start();
         // print_r($_POST);
         // echo "</pre>";
 
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
 
         if (isset($_POST['kategorie'])) {
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
-            //Abfrage Texte
-            //if()
-            $sql = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
-            $sql = "delete from kategorie where name='" . $_POST['kat_name_del'] . "'";
-            $sql = "insert kategorie ('name') values" . $_POST['new_kat_name'] . "'";
-            //$sql = "update kategorie set name='".$_POST[]."'where name ='".$_POST[]."'";
 
+            //Abfrage 
+            $sql = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
 
             //SQL-Abfrage
 
@@ -94,12 +93,62 @@ session_start();
 
 
             mysqli_close($connection);
+        } elseif (isset($_POST['loeschen'])) {
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+
+            //Abfrage vorbereitung
+            $sql = "delete from kategorie where name='" . $_POST['kat_name_del'] . "'";
+
+            //SQL-Abfrage
+            $result = mysqli_query($connection, $sql);
+
+
+            // $num = mysqli_affected_rows($result);
+
+            //Ende der Abfrage
+            // echo "Es wurden " . $num . " gelöscht.";
+            mysqli_close($connection);
+        } elseif (isset($_POST['erstellen'])) {
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+
+            //Abfrage vorbereiten
+            $sql = "insert kategorie (name) values('" . $_POST["new_kat_name"] . "')";
+
+            //SQL-Abfrage
+            $result = mysqli_query($connection, $sql);
+
+            //Anzahl der betroffenen Datensätze ermitteln
+            //$num = mysqli_affected_rows($result);
+
+            //Ende der Abfrage
+            echo "Es wurden " . $num . " erstellt.";
+            mysqli_close($connection);
+        } elseif (isset($_POST['bearbeiten'])) {
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+
+            //Abfrage vorbereiten
+            $sql = "update kategorie set name='" . $_POST['kat_name_neu'] . "'where name ='" . $_POST['kat_name'] . "'";
+
+            //Abfragen
+
+
+            //SQL-Abfrage
+            $result = mysqli_query($connection, $sql);
+
+            //$num = mysqli_affected_rows($result);
+            //Ende der Abfrage
+            echo "Es wurden " . $num . " geändert.";
+            mysqli_close($connection);
         }
     } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
         header("Location: home.php");
     } else {
         header("Location: login.php");
     }
+
     ?>
 
 </head>
@@ -147,7 +196,7 @@ session_start();
             echo "<tr>";
             echo "<td>";
             echo "<form action='admin.php?k=2' method='post'>";
-            echo "<input  type='submit'  value='Kategorie Erstelle'class='kasse' style='border: none;'><br/>";
+            echo "<input  type='submit'  value='Kategorie Erstelle' class='kasse'  style='border: none;'><br/>";
             echo "</form>";
             echo "</td>";
             echo "</tr>";
@@ -156,7 +205,7 @@ session_start();
             echo "<tr>";
             echo "<td>";
             echo "<form action='admin.php?k=3' method='post'>";
-            echo "<input  type='submit'  value='Kategorie Aktualisieren'class='kasse' style='border: none;'><br/>";
+            echo "<input  type='submit'  value='Kategorie Aktualisieren'  class='kasse' style='border: none;'><br/>";
             echo "</form>";
             echo "</td>";
             echo "</tr>";
@@ -177,8 +226,8 @@ session_start();
                 echo "Geben sie die zu löschende Kategorie an.<br/><br/>";
 
                 echo "<form action='admin.php' method='post'>";
-                echo "<input type='text' name='kat_name_del'><br/><br/>";
-                echo "<input  type='submit'  value='Kategorie Löschen' name='del_kat' class='kasse' style='border: none;'><br/>";
+                echo "<input type='text' name='kat_name_del' required>";
+                echo "<input  type='submit'  value='Kategorie Löschen' name='loeschen' class='kasse' style='border: none;' ><br/>";
 
                 echo "</form>";
                 echo "</center>";
@@ -194,8 +243,8 @@ session_start();
                 echo "Geben sie den Namen der neuen Kategorie an.<br/><br/>";
 
                 echo "<form action='admin.php' method='post'>";
-                echo "<input type='text' name='new_kat_name'><br/><br/>";
-                echo "<input  type='submit'  value='Kategorie erstellen' name='new_kat' class='kasse' style='border: none;'><br/>";
+                echo "<input type='text' name='new_kat_name' required><br/><br/>";
+                echo "<input  type='submit'  value='Kategorie erstellen' name='erstellen' class='kasse' style='border: none;'><br/>";
                 echo "</form>";
 
                 echo "</center>";
@@ -208,13 +257,14 @@ session_start();
 
                 echo "</br >";
                 echo "<center>";
+
                 echo "Geben sie den Namen der zu bearbeitenden Kategorie an.<br/>";
 
                 echo "<form action='admin.php' method='post'>";
-                echo "<input type='text' name='kat_name'><br/><br/><br/>";
+                echo "<input type='text' name='kat_name' required><br/><br/><br/>";
                 echo "Geben sie den neuen Namen der Kategorie an.<br/><br/>";
-                echo "<input type='text' name='kat_name_neu'><br/><br/>";
-                echo "<input  type='submit'  value='Kategorie Ändern' name='change_kat' class='kasse' style='border: none;'><br/>";
+                echo "<input type='text' name='kat_name_neu' required><br/><br/>";
+                echo "<input  type='submit'  value='Kategorie Ändern' name='bearbeiten' class='kasse' style='border: none;'><br/>";
                 echo "</form>";
 
                 echo "</center>";
