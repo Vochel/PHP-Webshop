@@ -98,19 +98,19 @@ session_start();
                     $products[$o] = $dsatz;
 
                     //Abfrage Text
-                    $sql = "select * from komments where fk_product='" . $products[$o]['Pr_Nummer'] . "'";
+                    $sql_rat = "select * from komments where fk_product='" . $products[$o]['Pr_Nummer'] . "'";
 
                     //SQL-Abfrage
-                    $result = mysqli_query($connection, $sql);
+                    $result_rat = mysqli_query($connection, $sql_rat);
 
                     //Anzahl der Datensätze ermitteln
-                    $num = mysqli_num_rows($result);
+                    $num_rat = mysqli_num_rows($result_rat);
 
                     $k = 0;
 
                     //schreibt in ratings alle beertungen der prcute mit key Pr_Numemr und value rating
-                    while ($dsatz = mysqli_fetch_assoc($result)) {
-                        $ratings[$k] = [$products[$o]['Pr_Nummer'] => $dsatz['rating']];
+                    while ($dsatz_rat = mysqli_fetch_assoc($result_rat)) {
+                        $ratings[$k] = [$products[$o]['Pr_Nummer'] => $dsatz_rat['rating']];
                         $k++;
                     }
                     $o++;
@@ -149,18 +149,18 @@ session_start();
             return $ergebnis;
         }
 
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
 
 
         // echo "<pre>";
         // print_r($kategorien);
         // echo "</pre>";
 
-        // echo "<pre>";
-        // print_r($products);
-        // echo "</pre>";
+        echo "<pre>";
+        print_r($products);
+        echo "</pre>";
 
         // echo "<pre>";
         // print_r($ratings);
