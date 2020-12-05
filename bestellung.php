@@ -22,13 +22,13 @@ session_start();
             setcookie("street", $_POST['street'], time() + 9999999);
             setcookie("nr", $_POST['nr'], time() + 9999999);
         }
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_SESSION);
+        // echo "</pre>";
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
     } else {
         header("Location: login.php");
     }

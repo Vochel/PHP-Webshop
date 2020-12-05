@@ -149,18 +149,17 @@ session_start();
             return $ergebnis;
         }
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
 
         // echo "<pre>";
         // print_r($kategorien);
         // echo "</pre>";
 
-        echo "<pre>";
-        print_r($products);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($products);
+        // echo "</pre>";
 
         // echo "<pre>";
         // print_r($ratings);
