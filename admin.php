@@ -200,6 +200,7 @@ session_start();
 
         <div class="column middle">
             <?php
+
             //formular zu Löschen einer Kategorie
             if (isset($_GET['k']) && $_GET['k'] == 1) {
                 echo "<center>
@@ -251,19 +252,6 @@ session_start();
                     }
                     echo "<tr><td> " . $prods['Pr_Nummer'] . " </td><td> " . $prods['name'] . "</td><td> " . $prods['price'] . "</td><td> " . $prods['fk_kat'] . "</td><td> " . $prods['origin'] . "</td><td> " . $prods['exp_date'] . "</td></tr>";
                 }
-
-                echo "</table><br>";
-
-                //Hier werden die Buttons angelegt welche die Bearbeitung der Produkte Ermöglichen
-                echo "<table><tr>";
-
-                echo "<td><form action='admin.php?p=1' method='post'><input  type='submit'  value='Produkt Löschen'></form></td>";
-
-                echo "<td><form action='admin.php?p=2' method='post'><input  type='submit'  value='Produkt Bearbeiten'></form></td>";
-
-                echo "<td><form action='admin.php?p=3' method='post'><input  type='submit'  value='Produkt Anlegen'></form></td>";
-
-                echo "</tr></table>";
             } else {
                 echo "<center><span class='material-icons'>
                         error_outline
