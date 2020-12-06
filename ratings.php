@@ -16,6 +16,7 @@ session_start();
     ) {
 
         $task;
+        global $bier;
 
         if (isset($_POST['bewerten']) || isset($_GET['t']) && $_GET['t'] == "1") {
             $task = ['bewerten' => 'ein Produkt bewerten'];
@@ -79,7 +80,49 @@ session_start();
         function ansehen($bier_nr)
         {
 
-            echo "test 1";
+            //Verbindung Datenbank
+            $conn = mysqli_connect("", "root");
+
+            //Datenbank auswählen
+            mysqli_select_db($conn, "webshop");
+
+            //Abfrage Text
+            $sql_comments = "select * from komments where fk_product='" . $bier_nr . "'";
+
+            //SQL-Abfrage
+            $result = mysqli_query($conn, $sql_comments);
+
+            $n = 0;
+            while ($dsatz = mysqli_fetch_assoc($result)) {
+                $_SESSION['comments'][$n] = $dsatz;
+                $n++;
+            }
+
+            //Abfrage Text
+            $sql_prod = "select * from product where Pr_Nummer='" . $bier_nr . "'";
+
+            //SQL-Abfrage
+            $result = mysqli_query($conn, $sql_prod);
+
+            while ($dsatz = mysqli_fetch_assoc($result)) {
+                $_SESSION['bier'] = $dsatz['name'];
+                echo "<h2>Hier siehst du alle bewertungen für " . $dsatz['name'] . ": </h2>";
+            }
+
+            if (!isset($_SESSION['comments'])) {
+                echo "Leider sind noch keine Bewertungen für dieses Produkt vorhanden. <br>";
+            } else {
+                echo "<br><table border='1'> <tr class='table_head'><td>Bewertung</td><td>Kommentar</td></tr>";
+                foreach ($_SESSION['comments'] as $com) {
+                    echo "<tr><td> " . $com['rating'] . " &#9733;</td><td> " . $com['komment'] . "</td>";
+                }
+                echo "</table><br>";
+            }
+
+            //Verbindung schließen
+            mysqli_close($conn);
+
+            unset($_SESSION['comments']);
         }
 
         function bewerten($bier_nr)
@@ -97,12 +140,13 @@ session_start();
             $result = mysqli_query($conn, $sql);
 
             while ($dsatz = mysqli_fetch_assoc($result)) {
+                $_SESSION['bier'] = $dsatz;
                 echo "<h2>Füge hier dein Kommentar für " . $dsatz['name'] . " hinzu:";
             }
 
 
             echo "<form action='ratings.php?e=1' method='post'>";
-            echo "<br><input type='text' name='sterne' required placeholder='Wie viele Sterne?'><br>";
+            echo "<br><input type='text' name='sterne' required placeholder='Wie viele Sterne? (1-5)'><br>";
             echo "<input type='text' name='comment' required size='60' placeholder='Dein Kommertar'><br><br>";
             echo "<input class='kasse' style='border: none;' type='submit' value='Absenden'>";
             echo "</form>";
@@ -118,18 +162,17 @@ session_start();
         // print_r($_SESSION);
         // echo "</pre>";
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
 
-        echo "<pre>";
-        print_r($task);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($task);
+        // echo "</pre>";
 
         // echo "<pre>";
         // print_r($products);
         // echo "</pre>";
-
 
     } else {
         header("Location: login.php");
@@ -146,6 +189,7 @@ session_start();
     <div class="topnav">
         <a href="logout.php">Logout</a>
         <a href="warenkorb.php">Warenkorb</a>
+        <a href="ratings.php">Produkte bewerten</a>
         <a href="home.php">Startseite</a>
     </div>
 
@@ -153,7 +197,28 @@ session_start();
         <center>
             <?php
             if (isset($_GET['e']) && $_GET['e'] == "1") {
-                echo "<p style='color: green;'>Dein Kommentar wurde erfolgreich hinzugefügt!</p>";
+                //Verbindung Datenbank
+                $connection = mysqli_connect("", "root");
+
+                //Datenbank auswählen
+                mysqli_select_db($connection, "webshop");
+
+                //Abfrage Text
+                $sql = "insert komments (rating, komment, fk_user, fk_product) values ('" . $_POST["sterne"] . "', '" . $_POST["comment"] . "', '" . $_SESSION["user_nr"] . "', '" . @$_SESSION['bier']['Pr_Nummer'] . "')";
+
+                //SQL-Abfrage
+                $result = mysqli_query($connection, $sql);
+
+                //Anzahl der Datensätze ermitteln
+                $num = mysqli_affected_rows($connection);
+
+                if ($num == 1) {
+                    echo "<p style='color: green;'>Dein Kommentar wurde erfolgreich hinzugefügt!</p>";
+                } else {
+                    echo "<p style='color: red;'>Fehler beim hinzufügen der Bewertung!</p>";
+                }
+
+                unset($_SESSION['bier']);
             }
 
             if (!isset($_POST['ansehen']) && !isset($_POST['bewerten']) && !isset($_POST['bier'])) {
