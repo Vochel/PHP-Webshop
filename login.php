@@ -86,7 +86,7 @@ session_start();
                 <input class="" type="password" name="password" placeholder="Password" required />
                 <br>
                 <br>
-                <button class="" type="submit">Log In</button>
+                <input class='kasse' style='border: none;' type="submit" value="Log In" />
                 <br>
             </form>
             <br>

@@ -75,7 +75,7 @@
                 <input type="text" name="nr" required placeholder="Hausnummer" size="30">
                 <br>
                 <br>
-                <input type="submit" value="Jetzt registrieren">
+                <input class='kasse' style='border: none;' type="submit" value="Jetzt registrieren">
                 <br>
             </form>
             <br>

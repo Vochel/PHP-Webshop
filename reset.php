@@ -61,7 +61,7 @@
                 <input type="password" name="pw" required placeholder="neues Passwort" size="30">
                 <br>
                 <br>
-                <input type="submit" value="Passwort zurücksetzen">
+                <input class='kasse' style='border: none;' type="submit" value="Passwort zurücksetzen">
                 <br>
             </form>
             <br>
