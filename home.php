@@ -12,6 +12,7 @@ session_start();
 
 
     <?php
+    //lädt Seite nur, falls Login ok und User Type = User
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
 
         //löscht Warenkorb nach Bestellung
@@ -42,7 +43,7 @@ session_start();
         //Datenbank auswählen
         mysqli_select_db($connection, "webshop");
 
-        //Abfrage Text
+        //Abfrage Text für alle Kategorien
         $sql_kat = "select name from kategorie";
 
         //SQL-Abfrage
@@ -51,23 +52,24 @@ session_start();
         //Anzahl der Datensätze ermitteln
         $num = mysqli_num_rows($result);
 
-        //Array aller Kategorien & Produkte
+        //Array aller Kategorien & Produkte & Ratings
         $kategorien = array();
         $products = array();
         $ratings = array();
         $j = 0;
 
+        //ermittelte Kategorien werden in Kategorie Array geschrieben
         while ($dsatz = mysqli_fetch_assoc($result)) {
             $kategorien[$j] = $dsatz['name'];
             $j++;
         }
 
-
+        //falls User eine Kategorie ausgewählt hat, hole die Nr diesser Kategorie
         if (isset($_POST['kategorie'])) {
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
-            //Abfrage Text
+            //Abfrage Text für Kategorienummer
             $sql_kat = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
 
             //SQL-Abfrage
@@ -79,11 +81,12 @@ session_start();
             $kat_nr;
             $prod_nr = array();
 
+            //falls  genau eine Kategorie gefunden, hole alle Produkte dieser Kategorie
             if ($num == 1) {
                 $dsatz = mysqli_fetch_assoc($result);
                 $kat_nr = $dsatz['nummer'];
 
-                //Abfrage Text
+                //Abfrage Text für alle Produkte
                 $sql_prod = "select * from product where fk_kat='" . $kat_nr . "'";
 
                 //SQL-Abfrage
@@ -94,10 +97,11 @@ session_start();
 
                 $o = 0;
 
+                //schreibe alle gefundenen Produkte in einen Produkt-Array unf hol dir jeweils die Ratings
                 while ($dsatz = mysqli_fetch_assoc($result)) {
                     $products[$o] = $dsatz;
 
-                    //Abfrage Text
+                    //Abfrage Text für Ratings
                     $sql_rat = "select * from komments where fk_product='" . $products[$o]['Pr_Nummer'] . "'";
 
                     //SQL-Abfrage
@@ -108,7 +112,7 @@ session_start();
 
                     $k = 0;
 
-                    //schreibt in ratings alle beertungen der prcute mit key Pr_Numemr und value rating
+                    //schreibt in ratings alle Bewertungen der producte mit key Pr_Numemr und value rating
                     while ($dsatz_rat = mysqli_fetch_assoc($result_rat)) {
                         $ratings[$k] = [$products[$o]['Pr_Nummer'] => $dsatz_rat['rating']];
                         $k++;
@@ -169,8 +173,10 @@ session_start();
         // print_r($_SESSION);
         // echo "</pre>";
 
+        //falls Admin, redirect auf Admin Seite
     } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "admin") {
         header("Location: admin.php");
+        //Falls Login fehlgeschlagen redirect auf Login.php
     } else {
         header("Location: login.php");
     }
@@ -180,6 +186,7 @@ session_start();
 <body>
     <div class="header">
 
+        <!-- Begrüßung des Users mit Namen -->
         <h1>Hallo <?php if (!empty($_SESSION['name'])) {
                         echo $_SESSION['name'];
                     } ?>, willkommen auf dem Webshop!</h1>
@@ -195,6 +202,7 @@ session_start();
         <div class="column side">
             <h2>Kategorien</h2>
             <?php
+            // anzeigen aller Kategorien, falls welche vorhanden/gefunden
             if (!empty($kategorien)) {
                 echo "<ul class='categories'>";
                 echo "<form action='home.php' method='post'>";
@@ -211,6 +219,7 @@ session_start();
 
         <div class="column middle">
             <?php
+            // falls producte gefunden und Kategorie ausgewählt, zeig diese an
             if (!empty($products)) {
                 echo "<h2><u>" . $_POST['kategorie'] . "</u></h2>";
                 echo "<form action='home.php?e=1' method='post'>";
