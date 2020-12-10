@@ -8,6 +8,7 @@
     <title>Registrierung</title>
 
     <?php
+    //wenn alle Felder aus dem Form ausgefüllt und abgesendet wurden
     if (isset($_POST["mail"]) && isset($_POST["pw"]) && isset($_POST["name"]) && isset($_POST["fname"]) && isset($_POST["bdate"]) && isset($_POST["postcode"]) && isset($_POST["place"]) && isset($_POST["street"]) && isset($_POST["nr"])) {
         //Verbindung aufnehmen
         $connection = mysqli_connect("", "root");
@@ -15,7 +16,7 @@
         //Datenbank auswählen
         mysqli_select_db($connection, "webshop");
 
-        //Abfrage Text
+        //Abfrage Text --> neunen Nutzer anlegen
         $sql = "insert user (email, pw, name, fname, bdate, postcode, place, street, h_nr) values ('" . $_POST["mail"] . "', '" . $_POST["pw"] . "', '" . $_POST["name"] . "', '" . $_POST["fname"] . "', '" . $_POST["bdate"] . "', '" . $_POST["postcode"] . "', '" . $_POST["place"] . "', '" . $_POST["street"] . "', '" . $_POST["nr"] . "')";
 
         //SQL-Abfrage
@@ -27,11 +28,13 @@
         if ($num == 1) {
             //Verbindung schließen
             mysqli_close($connection);
+            //Redirect zum Login inkl. Hinweis erfolgreich registriert
             header("Location: login.php?e=1");
             exit;
         } else {
             //Verbindung schließen
             mysqli_close($connection);
+            //Fehlermeldung: Registration fehlgeschlagen
             header("Location: registration.php?f=1");
             exit;
         }
@@ -52,6 +55,7 @@
             </span>
             <?php
             if (isset($_GET['f']) && $_GET['f'] == 1) {
+                //Hinweis: Registration Fehlgeschlagen
                 echo "<p style='color: red;'>Fehler: <br> Registrierung fehlgeschlagen! Versuche es erneut.</p>";
             }
             ?>

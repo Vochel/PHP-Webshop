@@ -219,16 +219,20 @@ session_start();
 
         <div class="column middle">
             <?php
-            // falls producte gefunden und Kategorie ausgewählt, zeig diese an
+            // falls Producte gefunden und Kategorie ausgewählt, zeig diese an
             if (!empty($products)) {
+                //kategorie als Überschrift
                 echo "<h2><u>" . $_POST['kategorie'] . "</u></h2>";
                 echo "<form action='home.php?e=1' method='post'>";
                 echo "<table border='1'> <tr class='table_head'><td>Marke</td><td>Herkunft</td><td>Preis pro Kiste</td><td>Anzahl</td><td>Bewertungen</td></tr>";
 
+                //erstellt Array mit aller Produkte
                 $prods = array();
 
+                //füllt Produkt Array und gibt diese in Tabelle aus
                 foreach ($products as $item) {
                     foreach ($item as $key => $value) {
+                        //füllt Produkte Array
                         $prods[$key] = $value;
                     }
                     echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td>";
@@ -245,6 +249,7 @@ session_start();
                     </span>
                     <p>Wähle eine Kategorie!</p></center>";
 
+                //Hinweis: Erfolgreich in den Warenkorb gelegt
                 if (isset($_GET['e']) && $_GET['e'] == 1) {
                     echo "<center><p style='color: green;'>Deine gewählten Artikel wurden erfolgreich dem Warenkorb hinzugefügt!</p></center>";
                 }

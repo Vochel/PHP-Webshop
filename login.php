@@ -11,6 +11,7 @@ session_start();
     <title>Login</title>
 
     <?php
+    //prüft ob PW und Mail eingegeben wurden
     if (isset($_POST["mail"]) && isset($_POST["password"])) {
         //Verbindung aufnehmen
         $connection = mysqli_connect("", "root");
@@ -18,7 +19,7 @@ session_start();
         //Datenbank auswählen
         mysqli_select_db($connection, "webshop");
 
-        //Abfrage Text
+        //Abfrage Text - holt sich Daten des User s mit eingegebener Mail
         $sql = "select * from user where email ='" . $_POST["mail"] . "'";
 
         //SQL-Abfrage
@@ -28,8 +29,10 @@ session_start();
         $num = mysqli_num_rows($result);
 
         while ($dsatz = mysqli_fetch_assoc($result)) {
+            //prüft ob eingegebene Daten mit Daten aus Datenbank übereinstimmen
             if ($dsatz["email"] == $_POST["mail"] && $dsatz["pw"] == $_POST["password"]) {
 
+                //setzt Sessions für das weitere Vorgehen
                 $_SESSION['name'] = $dsatz["fname"];
                 $_SESSION['user_nr'] = $dsatz["user_nr"];
                 $_SESSION['login'] = "ok";
@@ -40,8 +43,10 @@ session_start();
                 header("Location: home.php");
                 exit;
             } elseif ($num > 1) {
+                //falls mehrere User mit gleicher Mail und Daten stimmen nicht, fahre fort
                 continue;
             } else {
+                //falls Daten nicht üereinstimmen zeige Fehlermeldung
                 mysqli_close($connection);
                 header("Location: login.php?f=1");
                 exit;
@@ -49,6 +54,7 @@ session_start();
         }
 
         if ($num == 0) {
+            //falls kein Nutzer mit Daten vorhanden --> Fehlermeldung
             mysqli_close($connection);
             header("Location: login.php?f=2");
             exit;
@@ -71,12 +77,16 @@ session_start();
             </span>
             <?php
             if (isset($_GET['f']) && $_GET['f'] == 1) {
+                //Fehlermeldung: Passwort falsch
                 echo "<p style='color: red;'>Fehler: <br> E-Mail und Passwort stimmen nicht überein!</p>";
             } elseif (isset($_GET['f']) && $_GET['f'] == 2) {
+                //Fehlermeldung: kein Nutzer vorhanden
                 echo "<p style='color: red;'>Fehler: <br> Es ist kein Nutzer mit dieser E-Mail vorhanden! Registriere dich um fortzufahren.</p>";
             } elseif (isset($_GET['e']) && $_GET['e'] == 1) {
+                //Hinweis: Erfolgreich registriert
                 echo "<p style='color: green;'>Registrierung erfolgreich! <br> Du kannst dich nun anmelden.</p>";
             } elseif (isset($_GET['e']) && $_GET['e'] == 2) {
+                //Hinweis: PW erfolgreich geändert
                 echo "<p style='color: green;'>Passwort erfolgreich geändert! <br> Du kannst dich nun anmelden.</p>";
             }
             ?>
