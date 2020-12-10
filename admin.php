@@ -184,90 +184,58 @@ session_start();
             //Hier erfolgt die erstellung der Buttons welche zur bearbeitung der Kategorien genutzt werden
             //Bereich für löschen
             echo "<table>";
-            echo "<tr>";
-            echo "<td>";
-            echo "<form action='admin.php?k=1' method='post'>";
-            echo "<input  type='submit'  value='Kategorie Löschen' class='kasse' style='border: none;'><br/>";
-            echo "</form>";
-            echo "</td>";
-            echo "</tr>";
+            echo "<tr><td><form action='admin.php?k=1' method='post'><input  type='submit'  value='Kategorie Löschen' class='kasse' style='border: none;'></form></td></tr>";
 
             //Bereich für erstellen
-            echo "<tr>";
-            echo "<td>";
-            echo "<form action='admin.php?k=2' method='post'>";
-            echo "<input  type='submit'  value='Kategorie Erstelle' class='kasse'  style='border: none;'><br/>";
-            echo "</form>";
-            echo "</td>";
-            echo "</tr>";
+
+            echo "<tr><td><form action='admin.php?k=2' method='post'><input  type='submit'  value='Kategorie Erstelle' class='kasse'  style='border: none;'></form></td></tr>";
 
             //Bereich für aktualisieren
-            echo "<tr>";
-            echo "<td>";
-            echo "<form action='admin.php?k=3' method='post'>";
-            echo "<input  type='submit'  value='Kategorie Aktualisieren'  class='kasse' style='border: none;'><br/>";
-            echo "</form>";
-            echo "</td>";
-            echo "</tr>";
 
+            echo "<tr><td><form action='admin.php?k=3' method='post'><input  type='submit'  value='Kategorie Aktualisieren'  class='kasse' style='border: none;'></form></td></tr>";
             echo "</table>";
+
             ?>
         </div>
 
         <div class="column middle">
             <?php
+
             //formular zu Löschen einer Kategorie
             if (isset($_GET['k']) && $_GET['k'] == 1) {
                 echo "<center>
-                    <p>Hier Können Sie Kategorien Löschen!</p></center>";
+                    <p>Hier Können Sie Kategorien Löschen!</p></center></br >";
 
-                echo "</br >";
-                echo "<center>";
-                echo "Geben sie die zu löschende Kategorie an.<br/><br/>";
+                echo "<center>Geben sie die zu löschende Kategorie an.<br/><br/>";
 
-                echo "<form action='admin.php' method='post'>";
-                echo "<input type='text' name='kat_name_del' required>";
-                echo "<input  type='submit'  value='Kategorie Löschen' name='loeschen' class='kasse' style='border: none;' ><br/>";
-
-                echo "</form>";
-                echo "</center>";
+                echo "<form action='admin.php' method='post'><input type='text' name='kat_name_del' required> <br/ ><br/ > <input  type='submit'  value='Kategorie Löschen' name='loeschen' class='kasse' style='border: none;' >";
+                echo "<br/></form></center>";
 
 
                 //Bereich für das Anlegen von neuen Kategoreien
             } elseif (isset($_GET['k']) && $_GET['k'] == 2) {
                 echo "<center>
-                    <p>Hier Können Sie Kategorien Anlegen!</p></center>";
+                    <p>Hier Können Sie Kategorien Anlegen!</p></center></br >";
 
-                echo "</br >";
-                echo "<center>";
-                echo "Geben sie den Namen der neuen Kategorie an.<br/><br/>";
+                echo "<center>Geben sie den Namen der neuen Kategorie an.<br/><br/>";
 
-                echo "<form action='admin.php' method='post'>";
-                echo "<input type='text' name='new_kat_name' required><br/><br/>";
-                echo "<input  type='submit'  value='Kategorie erstellen' name='erstellen' class='kasse' style='border: none;'><br/>";
-                echo "</form>";
-
-                echo "</center>";
-
+                echo "<form action='admin.php' method='post'><input type='text' name='new_kat_name' required><br/><br/><input  type='submit'  value='Kategorie erstellen' name='erstellen' class='kasse' style='border: none;'>";
+                echo "<br/></form></center>";
 
                 //Bereich für das bearbeiten eines bereits existierenden Produktes
             } elseif (isset($_GET['k']) && $_GET['k'] == 3) {
                 echo "<center>
-                    <p>Hier Können Sie Kategorien Änderen!</p></center>";
+                    <p>Hier Können Sie Kategorien Änderen!</p></center></br >";
 
-                echo "</br >";
-                echo "<center>";
+                echo "<center>Geben sie den Namen der zu bearbeitenden Kategorie an.<br/>";
 
-                echo "Geben sie den Namen der zu bearbeitenden Kategorie an.<br/>";
+                echo "<form action='admin.php' method='post'><input type='text' name='kat_name' required><br/><br/><br/>";
 
-                echo "<form action='admin.php' method='post'>";
-                echo "<input type='text' name='kat_name' required><br/><br/><br/>";
                 echo "Geben sie den neuen Namen der Kategorie an.<br/><br/>";
-                echo "<input type='text' name='kat_name_neu' required><br/><br/>";
-                echo "<input  type='submit'  value='Kategorie Ändern' name='bearbeiten' class='kasse' style='border: none;'><br/>";
-                echo "</form>";
+                echo "<input type='text' name='kat_name_neu' required><br/><br/><input  type='submit'  value='Kategorie Ändern' name='bearbeiten' class='kasse' style='border: none;'><br/>";
+                echo "</form></center>";
 
-                echo "</center>";
+
 
 
                 //Sollte ein Produkt geändert weden erfolgt dies im Nachfolgenden Bereich
@@ -284,33 +252,6 @@ session_start();
                     }
                     echo "<tr><td> " . $prods['Pr_Nummer'] . " </td><td> " . $prods['name'] . "</td><td> " . $prods['price'] . "</td><td> " . $prods['fk_kat'] . "</td><td> " . $prods['origin'] . "</td><td> " . $prods['exp_date'] . "</td></tr>";
                 }
-
-                echo "</table><br>";
-
-                //Hier werden die Buttons angelegt welche die Bearbeitung der Produkte Ermöglichen
-                echo "<table>";
-
-                echo "<tr>";
-                echo "<td>";
-                echo "<form action='admin.php?p=1' method='post'>";
-                echo "<input  type='submit'  value='Produkt Löschen'><br/>";
-                echo "</form>";
-                echo "</td>";
-
-                echo "<td>";
-                echo "<form action='admin.php?p=2' method='post'>";
-                echo "<input  type='submit'  value='Produkt Bearbeiten'><br/>";
-                echo "</form>";
-                echo "</td>";
-
-                echo "<td>";
-                echo "<form action='admin.php?p=3' method='post'>";
-                echo "<input  type='submit'  value='Produkt Anlegen'><br/>";
-                echo "</form>";
-                echo "</td>";
-                echo "</tr>";
-
-                echo "</table>";
             } else {
                 echo "<center><span class='material-icons'>
                         error_outline
