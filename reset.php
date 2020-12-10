@@ -15,7 +15,7 @@
         //Datenbank auswählen
         mysqli_select_db($connection, "webshop");
 
-        //Abfrage Text
+        //Abfrage Text --> PW updaten
         $sql = "update user set pw='" . $_POST["pw"] . "' where email='" . $_POST["mail"] . "'";
 
         //SQL-Abfrage
@@ -27,11 +27,13 @@
         if ($num == 1) {
             //Verbindung schließen
             mysqli_close($connection);
+            //Redirect zum Login mit Hinweis erfolgreich zurückgesetzt
             header("Location: login.php?e=2");
             exit;
         } else {
             //Verbindung schließen
             mysqli_close($connection);
+            //wirft Fehlermeldung
             header("Location: reset.php?f=1");
             exit;
         }
@@ -52,6 +54,7 @@
             </span>
             <?php
             if (isset($_GET['f']) && $_GET['f'] == 1) {
+                //Fehlermeldung: PW-Reset fehlgeschlagen
                 echo "<p style='color: red;'>Fehler: <br> Passwortänderung fehlgeschlagen.</p>";
             }
             ?>
