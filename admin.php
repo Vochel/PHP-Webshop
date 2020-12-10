@@ -263,23 +263,29 @@ session_start();
                 echo "<center>
                     <p><h2>Hier Können Sie Produkte Anlegen!</h2></p></center></br >";
 
-                echo "<center>Geben sie den Namen des neuen Produkts an.<br/><br/>";
+                echo "<center>Geben Sie den Namen des neuen Produkts an.<br/><br/><form action='admin.php' method='post'><input type='text' name='new_prod_name' required><br/><br/>";
 
-                echo "<form action='admin.php' method='post'><input type='text' name='new_kat_name' required><br/><br/><input  type='submit'  value='Produkt erstellen' name='p_erstellen' class='kasse' style='border: none;'>";
-                echo "<br/></form></center>";
+                echo "Geben Sie den Preis des neuen Produktes an <br/><br/><input type='number' name='price' min='0' value='0' step='.01'required><br/><br/>";
+
+                // echo "Geben Sie die Kategorie des neuen Produktes an <br/><br/><input type='number' name='categorie' ";
+
+                echo "Geben Sie die Herkunft des neuen Produkts an.<br/><br/><input type='text' name='new_prod_origin' required><br/><br/>";
+                echo "Geben Sie das Verfallsdatum des neuen Produktes an<br/><br/> <input type='date' name='exp_date'><br/><br/><input  type='submit'  value='Produkt erstellen' name='p_erstellen' class='kasse' style='border: none;'><br/></form></center>";
+
 
                 //Bereich für das bearbeiten eines bereits existierenden Produktes
             } elseif (isset($_GET['k']) && $_GET['k'] == 6) {
                 echo "<center>
-                    <p><h2>Hier Können Sie Produkte Änderen!</h2></p></center></br >";
+                <p><h2>Hier Können Sie Produkte Anlegen!</h2></p></center></br >";
 
-                echo "<center>Geben sie den Namen des zu bearbeitenden Produktes an.<br/>";
+                echo "<center>Geben Sie den Namen des zu ändernden Produkts an.<br/><br/><form action='admin.php' method='post'><input type='text' name='swich_prod_name' required><br/><br/>";
 
-                echo "<form action='admin.php' method='post'><input type='text' name='kat_name' required><br/><br/><br/>";
+                echo "Geben Sie den neuen Preis des Produktes an <br/><br/><input type='number' name='change_price' min='0' value='0' step='.01'required><br/><br/>";
 
-                echo "Geben sie den neuen Namen der Kategorie an.<br/><br/>";
-                echo "<input type='text' name='kat_name_neu' required><br/><br/><input  type='submit'  value='Produkt Ändern' name='p_bearbeiten' class='kasse' style='border: none;'><br/>";
-                echo "</form></center><br/> <br />";
+                // echo "Geben Sie die Kategorie des neuen Produktes an <br/><br/><input type='number' name='categorie' ";
+
+                echo "Geben Sie die geänderte Herkunft des neuen Produkts an.<br/><br/><input type='text' name='change_prod_origin' required><br/><br/>";
+                echo "Geben Sie das neue Verfallsdatum des neuen Produktes an<br/><br/> <input type='date' name='change_exp_date'><br/><br/><input  type='submit'  value='Produkt erstellen' name='p_erstellen' class='kasse' style='border: none;'><br/></form></center>";
             }
             ?>
         </div>
