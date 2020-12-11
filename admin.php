@@ -138,11 +138,20 @@ session_start();
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
-            //Abfrage vorbereiten!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // $sql = "update product set name='" . $_POST['prod_name_neu'] . "',price='".$_POST['change_price']."',fk_kat ='".$_POST['sel_cat_new']."',origin='".$_POST['change_prod_origin']."',exp_date='".$_POST['change_exp_date']."' where name ='" . $_POST['prod_name'] . "'";
+            foreach ($kategorien as $var => $key) {
+                foreach ($key as $cat => $bname) {
 
+                    if ($cat == "name" && $_POST['sel_cat_new'] == $bname) {
+                        $sql = "update product set name='" . $_POST['prod_name_neu'] . "',price='" . $_POST['change_price'] . "',fk_kat ='" . $key['Nummer']  . "',origin='" . $_POST['change_prod_origin'] . "',exp_date='" . $_POST['change_exp_date'] . "' where name ='" . $_POST['prod_name'] . "'";
 
-            mysqli_query($connection, $sql);
+                        //SQL-Abfrage
+                        $result = mysqli_query($connection, $sql);
+                    }
+                }
+            }
+            $num = mysqli_affected_rows($connection);
+            echo $sql;
+            echo $num;
 
             mysqli_close($connection);
         }
@@ -319,11 +328,11 @@ session_start();
                 //--------------------------test---------------------
                 echo "Geben Sie neue die Kategorie des Produktes an <br/><br/><select name='sel_cat_new'>";
                 foreach ($kategorien as $var => $key) {
-                    echo "<pre>";
-                    print_r($key);
-                    echo "</pre>";
-                    foreach ($key as $cat) {
-                        echo "<option valeue='" . $key['name'] . "'>" . $cat . "</option>";
+
+                    foreach ($key as $cat => $bname) {
+                        if ($cat == "name") {
+                            echo " <option valeue='" . $key['name'] . "'>" . $bname . "</option>     ";
+                        }
                     }
                 }
                 echo "</select></br></br>";
