@@ -38,9 +38,11 @@ session_start();
             $j++;
         }
 
-        // echo "<pre>";
-        // print_r($kategorien);
-        // echo "</pre>";
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+
+
 
 
 
@@ -114,12 +116,19 @@ session_start();
 
             //Abfrage vorbereiten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-            // $sql = "insert product (name) values('" . $_POST["new_prod_name"] . "', '" . $_POST["price"] . "', '".$_POST["sel_cat"]."','".$_POST["new_prod_origin"]."','".$_POST["exp_date"]."')";
+            foreach ($kategorien as $var => $key) {
 
+                foreach ($key as $cat => $bname) {
+                    if ($cat == "name" && $bname == $_POST['sel_cat']) {
+                        $sql = "insert product (name, price, fk_kat, origin, exp_date) values ('" . $_POST["new_prod_name"] . "', '" . $_POST["price"] . "', '" . $_POST["sel_cat"] . "', '" . $_POST["new_prod_origin"] . "', '" . $_POST["exp_date"] . "', )";
+                    }
+                }
+            }
             //SQL-Abfrage
-            mysqli_query($connection, $sql);
+            $erg = mysqli_query($connection, $sql);
 
-
+            $num = mysqli_affected_rows($erg);
+            echo $num;
             mysqli_close($connection);
         } elseif (isset($_POST['p_bearbeiten'])) {
             //Datenbank auswählen
@@ -133,6 +142,15 @@ session_start();
 
             mysqli_close($connection);
         }
+        //elseif(isset($_POST['sel_cat'])){
+        //     foreach ($kategorien as $var => $key) {
+        //         foreach ($key as $cat =>$bname) {
+        //             if ($cat == "name"&& $bname==$_POST['sel_cat']) {
+        //                 $sql = "insert product (name) values('" . $_POST["new_prod_name"] . "', '" . $_POST["price"] . "', '".$_POST["sel_cat"]."','".$_POST["new_prod_origin"]."','".$_POST["exp_date"]."')";
+
+        //             }}}
+
+        // }
     } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
         header("Location: home.php");
     } else {
@@ -248,7 +266,7 @@ session_start();
                 echo "<br/></form></center>";
 
 
-                //Bereich für das Anlegen von neuen Kategoreien
+                //Bereich für das Anlegen von neuen Produkten
             } elseif (isset($_GET['k']) && $_GET['k'] == 5) {
                 echo "<center>
                     <p><h2>Hier Können Sie Produkte Anlegen!</h2></p></center></br >";
@@ -257,18 +275,23 @@ session_start();
 
                 echo "Geben Sie den Preis des neuen Produktes an <br/><br/><input type='number' name='price' min='0' value='0' step='.01'required><br/><br/>";
 
-
+                // echo "<pre>";
+                // print_r($kategorien);
+                // echo "</pre>";
 
                 //--------------------------test---------------------
                 echo "Geben Sie die Kategorie des neuen Produktes an <br/><br/><select name='sel_cat'>";
                 foreach ($kategorien as $var => $key) {
-                    echo "<pre>";
-                    print_r($key);
-                    echo "</pre>";
-                    foreach ($key as $cat) {
-                        echo "<option valeue='" . $key['name'] . "'>" . $cat . "</option>";
+
+                    foreach ($key as $cat => $bname) {
+                        if ($cat == "name") {
+                            echo " <option valeue='" . $key['name'] . "'>" . $bname . "</option>     ";
+                        }
                     }
                 }
+
+
+
                 echo "</select></br></br>";
                 //---------------------test_ende---------------------
 
