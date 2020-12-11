@@ -20,7 +20,7 @@ session_start();
         mysqli_select_db($connection, "webshop");
 
         //Abfrage Text
-        $sql_kat = "select name from kategorie";
+        $sql_kat = "select * from kategorie";
 
         //SQL-Abfrage
         $result = mysqli_query($connection, $sql_kat);
@@ -34,7 +34,7 @@ session_start();
         $j = 0;
 
         while ($dsatz = mysqli_fetch_assoc($result)) {
-            $kategorien[$j] = $dsatz['name'];
+            $kategorien[$j] = $dsatz;
             $j++;
         }
 
@@ -42,73 +42,23 @@ session_start();
         // print_r($kategorien);
         // echo "</pre>";
 
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
-
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-
-        if (isset($_POST['kategorie'])) {
-            //Datenbank auswählen
-            mysqli_select_db($connection, "webshop");
 
 
-            //Abfrage 
-            $sql = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
-
-            //SQL-Abfrage
-
-            $result = mysqli_query($connection, $sql);
-
-            //Anzahl der Datensätze ermitteln
-            $num = mysqli_num_rows($result);
-
-            $kat_nr;
-
-            if ($num == 1) {
-                $dsatz = mysqli_fetch_assoc($result);
-                $kat_nr = $dsatz['nummer'];
-
-                //Abfrage Text
-                $sql_prod = "select * from product where fk_kat='" . $kat_nr . "'";
-
-                //SQL-Abfrage
-                $result = mysqli_query($connection, $sql_prod);
-
-                //Anzahl der Datensätze ermitteln
-                $num = mysqli_num_rows($result);
-
-                $o = 0;
-
-                while ($dsatz = mysqli_fetch_assoc($result)) {
-                    $products[$o] = $dsatz;
-                    $o++;
-                }
-            } else {
-                echo "Fehler beim abfragen der Kategorienummer!";
-            }
-
-
-
-            mysqli_close($connection);
-        } elseif (isset($_POST['loeschen'])) {
+        //BEARBEITUNG VON KATEGORIEN UND PRODUKTEN
+        //---------------Kategorien--------------------
+        //---------------Kategorie löschen-------------
+        if (isset($_POST['loeschen'])) {
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
             //Abfrage vorbereitung
             $sql = "delete from kategorie where name='" . $_POST['kat_name_del'] . "'";
 
-            //SQL-Abfrage
-            $result = mysqli_query($connection, $sql);
+            mysqli_query($connection, $sql);
 
-
-            // $num = mysqli_affected_rows($result);
-
-            //Ende der Abfrage
-            // echo "Es wurden " . $num . " gelöscht.";
             mysqli_close($connection);
+
+            //----------------Kategorie erstellen--------------------------
         } elseif (isset($_POST['erstellen'])) {
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
@@ -123,8 +73,10 @@ session_start();
             //$num = mysqli_affected_rows($result);
 
             //Ende der Abfrage
-            echo "Es wurden " . $num . " erstellt.";
+            //echo "Es wurden " . $num . " erstellt.";
             mysqli_close($connection);
+
+            //---------------------Kategorie bearbeiten------------------------
         } elseif (isset($_POST['bearbeiten'])) {
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
@@ -132,15 +84,53 @@ session_start();
             //Abfrage vorbereiten
             $sql = "update kategorie set name='" . $_POST['kat_name_neu'] . "'where name ='" . $_POST['kat_name'] . "'";
 
-            //Abfragen
-
 
             //SQL-Abfrage
-            $result = mysqli_query($connection, $sql);
+            mysqli_query($connection, $sql);
 
-            //$num = mysqli_affected_rows($result);
-            //Ende der Abfrage
-            echo "Es wurden " . $num . " geändert.";
+
+            mysqli_close($connection);
+
+            //-------------------------------------------------------------------------------------
+            //-------------------Aendern der Produkte----------------------------
+            //--------------------Produkt loeschen------------------------------
+        } elseif (isset($_POST['p_loeschen'])) {
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+
+            //Abfrage vorbereiten 
+            $sql = "delete from product where name='" . $_POST['prod_name_del'] . "'";
+
+            //SQL-Abfrage
+            mysqli_query($connection, $sql);
+
+
+            mysqli_close($connection);
+
+            //-------------------------Produkt erstellen-----------------------------
+        } elseif (isset($_POST['p_erstellen'])) {
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+
+            //Abfrage vorbereiten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            // $sql = "insert product (name) values('" . $_POST["new_prod_name"] . "', '" . $_POST["price"] . "', '".$_POST["sel_cat"]."','".$_POST["new_prod_origin"]."','".$_POST["exp_date"]."')";
+
+            //SQL-Abfrage
+            mysqli_query($connection, $sql);
+
+
+            mysqli_close($connection);
+        } elseif (isset($_POST['p_bearbeiten'])) {
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+
+            //Abfrage vorbereiten!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // $sql = "update product set name='" . $_POST['prod_name_neu'] . "',price='".$_POST['change_price']."',fk_kat ='".$_POST['sel_cat_new']."',origin='".$_POST['change_prod_origin']."',exp_date='".$_POST['change_exp_date']."' where name ='" . $_POST['prod_name'] . "'";
+
+
+            mysqli_query($connection, $sql);
+
             mysqli_close($connection);
         }
     } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
@@ -254,7 +244,7 @@ session_start();
 
                 echo "<center>Geben Sie das zu löschende Produkt an.<br/><br/>";
 
-                echo "<form action='admin.php' method='post'><input type='text' name='kat_name_del' required> <br/ ><br/ > <input  type='submit'  value='Produkt Löschen' name='p_loeschen' class='kasse' style='border: none;' >";
+                echo "<form action='admin.php' method='post'><input type='text' name='prod_name_del' required> <br/ ><br/ > <input  type='submit'  value='Produkt Löschen' name='p_loeschen' class='kasse' style='border: none;' >";
                 echo "<br/></form></center>";
 
 
@@ -267,7 +257,23 @@ session_start();
 
                 echo "Geben Sie den Preis des neuen Produktes an <br/><br/><input type='number' name='price' min='0' value='0' step='.01'required><br/><br/>";
 
-                // echo "Geben Sie die Kategorie des neuen Produktes an <br/><br/><input type='number' name='categorie' ";
+
+
+                //--------------------------test---------------------
+                echo "Geben Sie die Kategorie des neuen Produktes an <br/><br/><select name='sel_cat'>";
+                foreach ($kategorien as $var => $key) {
+                    echo "<pre>";
+                    print_r($key);
+                    echo "</pre>";
+                    foreach ($key as $cat) {
+                        echo "<option valeue='" . $key['name'] . "'>" . $cat . "</option>";
+                    }
+                }
+                echo "</select></br></br>";
+                //---------------------test_ende---------------------
+
+
+
 
                 echo "Geben Sie die Herkunft des neuen Produkts an.<br/><br/><input type='text' name='new_prod_origin' required><br/><br/>";
                 echo "Geben Sie das Verfallsdatum des neuen Produktes an<br/><br/> <input type='date' name='exp_date'><br/><br/><input  type='submit'  value='Produkt erstellen' name='p_erstellen' class='kasse' style='border: none;'><br/></form></center>";
@@ -278,14 +284,26 @@ session_start();
                 echo "<center>
                 <p><h2>Hier Können Sie Produkte Anlegen!</h2></p></center></br >";
 
-                echo "<center>Geben Sie den Namen des zu ändernden Produkts an.<br/><br/><form action='admin.php' method='post'><input type='text' name='swich_prod_name' required><br/><br/>";
+                echo "<center>Geben Sie den Namen des zu ändernden Produkts an.<br/><br/><form action='admin.php' method='post'><input type='text' name='prod_name' required><br/><br/>";
+                echo "Geben sie den neuen Namen des Produktes an.<br/><br/><input type='text' name='prod_name_neu' required><br/><br/>";
 
                 echo "Geben Sie den neuen Preis des Produktes an <br/><br/><input type='number' name='change_price' min='0' value='0' step='.01'required><br/><br/>";
 
-                // echo "Geben Sie die Kategorie des neuen Produktes an <br/><br/><input type='number' name='categorie' ";
+                //--------------------------test---------------------
+                echo "Geben Sie neue die Kategorie des Produktes an <br/><br/><select name='sel_cat_new'>";
+                foreach ($kategorien as $var => $key) {
+                    echo "<pre>";
+                    print_r($key);
+                    echo "</pre>";
+                    foreach ($key as $cat) {
+                        echo "<option valeue='" . $key['name'] . "'>" . $cat . "</option>";
+                    }
+                }
+                echo "</select></br></br>";
+                //---------------------test_ende---------------------
 
-                echo "Geben Sie die geänderte Herkunft des neuen Produkts an.<br/><br/><input type='text' name='change_prod_origin' required><br/><br/>";
-                echo "Geben Sie das neue Verfallsdatum des neuen Produktes an<br/><br/> <input type='date' name='change_exp_date'><br/><br/><input  type='submit'  value='Produkt erstellen' name='p_erstellen' class='kasse' style='border: none;'><br/></form></center>";
+                echo "Geben Sie die geänderte Herkunft des Produkts an.<br/><br/><input type='text' name='change_prod_origin' required><br/><br/>";
+                echo "Geben Sie das neue Verfallsdatum des Produktes an<br/><br/> <input type='date' name='change_exp_date'><br/><br/><input  type='submit'  value='Produkt Bearbeiten' name='p_bearbeiten' class='kasse' style='border: none;'><br/></form></center>";
             }
             ?>
         </div>
