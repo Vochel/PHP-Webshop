@@ -38,9 +38,9 @@ session_start();
             $j++;
         }
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($kategorien);
+        // echo "</pre>";
 
 
 
@@ -111,24 +111,28 @@ session_start();
 
             //-------------------------Produkt erstellen-----------------------------
         } elseif (isset($_POST['p_erstellen'])) {
+            mysqli_close($connection);
+            //Verbindung aufnehmen
+            $connection = mysqli_connect("", "root");
+
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
-            //Abfrage vorbereiten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
             foreach ($kategorien as $var => $key) {
-
                 foreach ($key as $cat => $bname) {
-                    if ($cat == "name" && $bname == $_POST['sel_cat']) {
-                        $sql = "insert product (name, price, fk_kat, origin, exp_date) values ('" . $_POST["new_prod_name"] . "', '" . $_POST["price"] . "', '" . $_POST["sel_cat"] . "', '" . $_POST["new_prod_origin"] . "', '" . $_POST["exp_date"] . "', )";
+
+                    if ($cat == "name" && $_POST['sel_cat'] == $bname) {
+                        $sql = "insert product (name, price, fk_kat, origin, exp_date) values ('" . $_POST["new_prod_name"] . "', '" . $_POST["price"] . "', '" . $key['Nummer'] . "', '" . $_POST["new_prod_origin"] . "', '" . $_POST["exp_date"] . "')";
+                        //SQL-Abfrage
+                        $result = mysqli_query($connection, $sql);
                     }
                 }
             }
-            //SQL-Abfrage
-            $erg = mysqli_query($connection, $sql);
 
-            $num = mysqli_affected_rows($erg);
+            //Anzahl der betroffenen Datensätze ermitteln
+            $num = mysqli_affected_rows($connection);
             echo $num;
+
             mysqli_close($connection);
         } elseif (isset($_POST['p_bearbeiten'])) {
             //Datenbank auswählen
