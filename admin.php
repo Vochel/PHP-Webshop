@@ -130,7 +130,22 @@ session_start();
         }
 
 
+        function produkte($products)
+        {
+            echo "<h3>Welches Produkt möchtest du Löschen?</h3>";
+            echo "<form action='admin.php' method='post'><table border='1'> <tr class='table_head'><td>Auswahl</td><td>Marke</td></tr>";
 
+            $prods = array();
+
+            foreach ($products as $item) {
+                foreach ($item as $key => $value) {
+                    $prods[$key] = $value;
+                }
+                echo "<tr><td><input type='radio' name='bier' value='" . $prods['Pr_Nummer'] . "' required></td><td> " . $prods['name'] . "</td></tr>";
+            }
+            echo "</table><br>";
+            echo "<input class='kasse' name='p_löschen' style='border: none;' type='submit' value='löschen'></form>";
+        }
 
         //ermittelt den Durschnitt aller Bewertungen einer Produkts
         function bewertung($Pr_Nummer, $ratings)
@@ -158,9 +173,9 @@ session_start();
             return $ergebnis;
         }
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
 
         // echo "<pre>";
         // print_r($kategorien);
@@ -177,9 +192,9 @@ session_start();
         // print_r($ratings);
         // echo "</pre>";
 
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($_SESSION);
+        // echo "</pre>";
 
         /**BEARBEITUNG VON KATEGORIEN UND PRODUKTEN
              KATEGORIEN
@@ -216,36 +231,39 @@ session_start();
             mysqli_close($connection);
 
             //Kategorie bearbeiten
-        } elseif (isset($_POST['bearbeiten'])) {
+        } elseif (isset($_POST['kat_bearbeiten'])) {
+            echo "test";
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
             //Abfrage vorbereiten
-            $sql = "update kategorie set name='" . $_POST['kat_name_neu'] . "'where name ='" . $_POST['kat_name'] . "'";
+            $sql = "update kategorie set name='" . $_POST['kat_name_neu'] . "'where name ='" . $_SESSION["kategorie"] . "'";
 
 
             //SQL-Abfrage
-            mysqli_query($connection, $sql);
+            $result = mysqli_query($connection, $sql);
 
+            @$num = mysqli_affected_rows($result);
 
             mysqli_close($connection);
-
+            $_SESSION["kategorie"] = $_POST["kat_name_neu"];
+            header("Refresh:0");
             //-------------------------------------------------------------------------------------
             //Aendern der Produkte
             //Produkt loeschen
-        } elseif (isset($_POST['p_loeschen'])) {
+        } elseif (isset($_POST['p_löschen'])) {
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
             //Abfrage vorbereiten 
-            $sql = "delete from product where name='" . $_POST['prod_name_del'] . "'";
+            $sql = "delete from product where Pr_Nummer='" . $_POST['bier'] . "'";
 
             //SQL-Abfrage
             mysqli_query($connection, $sql);
 
 
             mysqli_close($connection);
-
+            header("Refresh:0");
             //Produkt erstellen
         } elseif (isset($_POST['p_erstellen'])) {
             mysqli_close($connection);
@@ -385,19 +403,31 @@ session_start();
                 echo "</form>";
 
                 echo "<table><form action='admin.php'  method='post'>";
-                echo "<tr><td><input  type='submit' name='bearbeiten' value='Kategorie Löschen' class='kasse' style='border: none;'></form></td>";
+                echo "<tr><td><input  type='submit' name='bearbeiten' value='Kategorie Löschen' class='kasse' style='border: none;'></td>";
 
-                echo "<td><input  type='submit' name='bearbeiten' value='Kategorie Aktualisieren'  class='kasse' style='border: none;'></form></td>";
+                echo "<td><input  type='submit' name='bearbeiten' value='Kategorie Aktualisieren'  class='kasse' style='border: none;'></td>";
 
                 echo "<td><input  type='submit' name='bearbeiten' value='Produkt Löschen' class='kasse' style='border: none;'></form></td></tr>";
 
                 echo "</table><br/><br/>";
-            } /*else {
-                echo "<center><span class='material-icons'>
-                    error_outline
-                </span>
-                <p>Wähle eine Kategorie!</p></center>";
-            }*/
+            } elseif (empty($products) && !isset($_GET["k"])) {
+                echo "<center><p>Es sind noch keine Produkte in dieser Kategorie vorhanden!</p></center>";
+            }
+
+            if (isset($_POST['bearbeiten']) && $_POST["bearbeiten"] == "Kategorie Aktualisieren") {
+
+                echo "<center>Geben sie den neuen Namen der Kategorie an.<br/><br/>";
+                echo "<form action='admin.php' method='post'>";
+                echo "<input type='text' name='kat_name_neu' required><br/><br/>";
+                echo "<input  type='submit' name='kat_bearbeiten' value='Kategorie Ändern'  class='kasse' style='border: none;'><br/>";
+
+                echo "</form></center><br/> <br />";
+            }
+            if (isset($_POST['bearbeiten']) && $_POST["bearbeiten"] == "Produkt Löschen") {
+
+                produkte($products);
+            }
+
 
 
             //Bereich für das Anlegen von neuen Kategoreien
@@ -411,18 +441,9 @@ session_start();
                 echo "<form action='admin.php' method='post'><input type='text' name='new_kat_name' required><br/><br/><input  type='submit'  value='Kategorie erstellen' name='erstellen' class='kasse' style='border: none;'>";
                 echo "<br/></form></center>";
 
-                //Bereich für das bearbeiten eines bereits existierenden Produktes
-                /* } elseif (isset($_GET['k']) && $_GET['k'] == 3) {
-                echo "<center>
-                    <p><h2>Hier Können Sie Kategorien Änderen!</h2></p></center></br >";
+                //Bereich für das bearbeiten eines bereits existierenden Kategorie
 
-                echo "<center>Geben sie den Namen der zu bearbeitenden Kategorie an.<br/>";
 
-                echo "<form action='admin.php' method='post'><input type='text' name='kat_name' required><br/><br/><br/>";
-
-                echo "Geben sie den neuen Namen der Kategorie an.<br/><br/>";
-                echo "<input type='text' name='kat_name_neu' required><br/><br/><input  type='submit'  value='Kategorie Ändern' name='bearbeiten' class='kasse' style='border: none;'><br/>";
-                echo "</form></center><br/> <br />";*/
 
 
                 //-----------------------------------------------------------------------------------------------------------------------------------
