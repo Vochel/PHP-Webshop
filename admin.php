@@ -57,8 +57,8 @@ session_start();
             if ((isset($_SESSION["kategorie"]) && isset($_SESSION["kat_nr"]))) {
                 $kat_nr = $_SESSION["kat_nr"];
             }
-              //Datenbank auswählen
-              mysqli_select_db($connection, "webshop");
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
 
             //Abfrage Text für alle Produkte
             $sql_prod = "select * from product where fk_kat='" . $kat_nr . "'";
@@ -96,35 +96,35 @@ session_start();
         } else {
             echo "Fehler beim abfragen der Kategorienummer!";
         }
-        }
-        
-        function kategorieNummer(){
-             //Datenbank auswählen
-             $connection = mysqli_connect("", "root");
+
+
+        function kategorieNummer()
+        {
+            //Datenbank auswählen
+            $connection = mysqli_connect("", "root");
 
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
-             //Abfrage Text für Kategorienummer
-             $sql_kat = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
- 
-             //SQL-Abfrage
-             $result = mysqli_query($connection, $sql_kat);
- 
-             //Anzahl der Datensätze ermitteln
-             $num = mysqli_num_rows($result);
- 
-             $kat_nr=0;
-             $prod_nr = array();
- 
-             //falls  genau eine Kategorie gefunden, hole alle Produkte dieser Kategorie
-             if ($num == 1) {
-                 $dsatz = mysqli_fetch_assoc($result);
-                 $kat_nr = $dsatz['nummer'];
- 
-                 $_SESSION["kategorie"] = $_POST["kategorie"];
-                 $_SESSION["kat_nr"] = $kat_nr;
-             }
+            //Abfrage Text für Kategorienummer
+            $sql_kat = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
 
+            //SQL-Abfrage
+            $result = mysqli_query($connection, $sql_kat);
+
+            //Anzahl der Datensätze ermitteln
+            $num = mysqli_num_rows($result);
+
+            $kat_nr = 0;
+            $prod_nr = array();
+
+            //falls  genau eine Kategorie gefunden, hole alle Produkte dieser Kategorie
+            if ($num == 1) {
+                $dsatz = mysqli_fetch_assoc($result);
+                $kat_nr = $dsatz['nummer'];
+
+                $_SESSION["kategorie"] = $_POST["kategorie"];
+                $_SESSION["kat_nr"] = $kat_nr;
+            }
         }
 
         //ermittelt den Durschnitt aller Bewertungen einer Produkts
