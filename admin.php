@@ -13,6 +13,13 @@ session_start();
     <?php
     if (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "admin") {
 
+        if (isset($_POST["side_btn"])) {
+            unset($_SESSION['kategorie']);
+            unset($_SESSION['kat_nr']);
+        }
+
+
+
         //Verbindung Datenbank
         $connection = mysqli_connect("", "root");
 
@@ -47,7 +54,34 @@ session_start();
             $j++;
         }
 
+        function kategorieNummer()
+        {
+            //Datenbank auswählen
+            $connection = mysqli_connect("", "root");
 
+            //Datenbank auswählen
+            mysqli_select_db($connection, "webshop");
+            //Abfrage Text für Kategorienummer
+            $sql_kat = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
+
+            //SQL-Abfrage
+            $result = mysqli_query($connection, $sql_kat);
+
+            //Anzahl der Datensätze ermitteln
+            $num = mysqli_num_rows($result);
+
+            $kat_nr = 0;
+            $prod_nr = array();
+
+            //falls  genau eine Kategorie gefunden, hole alle Produkte dieser Kategorie
+            if ($num == 1) {
+                $dsatz = mysqli_fetch_assoc($result);
+                $kat_nr = $dsatz['nummer'];
+
+                $_SESSION["kategorie"] = $_POST["kategorie"];
+                $_SESSION["kat_nr"] = $kat_nr;
+            }
+        }
 
         if (isset($_POST['kategorie']) || (isset($_SESSION["kategorie"]) && isset($_SESSION["kat_nr"]))) {
             if (isset($_POST['kategorie'])) {
@@ -93,39 +127,10 @@ session_start();
                 }
                 $o++;
             }
-        } else {
-            echo "Fehler beim abfragen der Kategorienummer!";
         }
 
 
-        function kategorieNummer()
-        {
-            //Datenbank auswählen
-            $connection = mysqli_connect("", "root");
 
-            //Datenbank auswählen
-            mysqli_select_db($connection, "webshop");
-            //Abfrage Text für Kategorienummer
-            $sql_kat = "select nummer from kategorie where name='" . $_POST['kategorie'] . "'";
-
-            //SQL-Abfrage
-            $result = mysqli_query($connection, $sql_kat);
-
-            //Anzahl der Datensätze ermitteln
-            $num = mysqli_num_rows($result);
-
-            $kat_nr = 0;
-            $prod_nr = array();
-
-            //falls  genau eine Kategorie gefunden, hole alle Produkte dieser Kategorie
-            if ($num == 1) {
-                $dsatz = mysqli_fetch_assoc($result);
-                $kat_nr = $dsatz['nummer'];
-
-                $_SESSION["kategorie"] = $_POST["kategorie"];
-                $_SESSION["kat_nr"] = $kat_nr;
-            }
-        }
 
         //ermittelt den Durschnitt aller Bewertungen einer Produkts
         function bewertung($Pr_Nummer, $ratings)
@@ -153,9 +158,9 @@ session_start();
             return $ergebnis;
         }
 
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
 
         // echo "<pre>";
         // print_r($kategorien);
@@ -172,26 +177,30 @@ session_start();
         // print_r($ratings);
         // echo "</pre>";
 
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
 
         /**BEARBEITUNG VON KATEGORIEN UND PRODUKTEN
              KATEGORIEN
                 Kategorie löschen*/
 
-        if (isset($_POST['loeschen'])) {
+        if (isset($_POST['bearbeiten']) && $_POST["bearbeiten"] == "Kategorie Löschen") {
 
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
 
             //Abfrage vorbereitung
-            $sql = "delete from kategorie where name='" . $_POST['kat_name_del'] . "'";
+            $sql = "delete from kategorie where name='" . $_SESSION["kategorie"] . "'";
 
-            mysqli_query($connection, $sql);
+            $result = mysqli_query($connection, $sql);
 
+            @$num = mysqli_affected_rows($result);
+            if ($num == 1) {
+                $_GET["e"] = 1;
+            }
             mysqli_close($connection);
-
+            header("Refresh:0");
             //Kategorie erstellen
         } elseif (isset($_POST['erstellen'])) {
             //Datenbank auswählen
@@ -329,7 +338,7 @@ session_start();
 
             //Bereich für das erstellen von Kategorien
 
-            echo "<tr><td><form action='admin.php?k=1' method='post'><input  type='submit'  value='Kategorie Erstelle' class='kasse'  style='border: none;'></form></td></tr>";
+            echo "<tr><td><form action='admin.php?k=1'  method='post'><input  type='submit' name='side_btn'  value='Kategorie Erstelle' class='kasse'  style='border: none;'></form></td></tr>";
 
             //-------------------------------------------------
 
@@ -337,11 +346,11 @@ session_start();
 
             //Bereich für erstellen
 
-            echo "<tr><td><form action='admin.php?k=2' method='post'><input  type='submit'  value='Produkt Erstelle' class='kasse'  style='border: none;'></form></td></tr>";
+            echo "<tr><td><form action='admin.php?k=2' method='post'><input  type='submit' name='side_btn' value='Produkt Erstelle' class='kasse'  style='border: none;'></form></td></tr>";
 
             //Bereich für aktualisieren
 
-            echo "<tr><td><form action='admin.php?k=3' method='post'><input  type='submit'  value='Produkt Aktualisieren'  class='kasse' style='border: none;'></form></td></tr>";
+            echo "<tr><td><form action='admin.php?k=3' method='post'><input  type='submit' name='side_btn' value='Produkt Aktualisieren'  class='kasse' style='border: none;'></form></td></tr>";
             echo "</table><br/ > <br/ ><br/ >";
             ?>
 
@@ -353,7 +362,7 @@ session_start();
             // falls Producte gefunden und Kategorie ausgewählt, zeig diese an
             if (!empty($products)) {
                 //kategorie als Überschrift
-                echo "<h2><u>" . $_POST['kategorie'] . "</u></h2>";
+                echo "<h2><u>" . $_SESSION["kategorie"] . "</u></h2>";
                 echo "<form action='home.php?e=1' method='post'>";
                 echo "<table border='1'> <tr class='table_head'><td>Marke</td><td>Herkunft</td><td>Preis pro Kiste</td><td>Bewertungen</td></tr>";
 
@@ -383,21 +392,6 @@ session_start();
                 echo "<td><input  type='submit' name='bearbeiten' value='Produkt Löschen' class='kasse' style='border: none;'></form></td></tr>";
 
                 echo "</table><br/><br/>";
-
-                //IDEE
-
-                //Kategorien löschen
-
-                /* if (isset($_GET['j']) && $_GET['j'] == 1) {
-                    echo "test";
-                    echo "<center>
-                        <p><h2>Hier Können Sie Kategorien Löschen!</h2></p></center></br >";
-
-                    echo "<center>Geben sie die zu löschende Kategorie an.<br/><br/>";
-
-                    echo "<form action='admin.php' method='post'><input type='text' name='kat_name_del' required> <br/ ><br/ > <input  type='submit'  value='Kategorie Löschen' name='loeschen' class='kasse' style='border: none;' >";
-                    echo "<br/></form></center>";
-                }*/
             } /*else {
                 echo "<center><span class='material-icons'>
                     error_outline
@@ -406,33 +400,9 @@ session_start();
             }*/
 
 
-            if (isset($_GET['j']) && $_GET['j'] == 1) {
-                echo "test";
-                echo "<center>
-                    <p><h2>Hier Können Sie Kategorien Löschen!</h2></p></center></br >";
-
-                echo "<center>Geben sie die zu löschende Kategorie an.<br/><br/>";
-
-                echo "<form action='admin.php' method='post'><input type='text' name='kat_name_del' required> <br/ ><br/ > <input  type='submit'  value='Kategorie Löschen' name='loeschen' class='kasse' style='border: none;' >";
-                echo "<br/></form></center>";
-            }
-
-
-
-
-            //formular zu Löschen einer Kategorie
-            /*if (isset($_GET['k']) && $_GET['k'] == 1) {
-                echo "<center>
-                    <p><h2>Hier Können Sie Kategorien Löschen!</h2></p></center></br >";
-
-                echo "<center>Geben sie die zu löschende Kategorie an.<br/><br/>";
-
-                echo "<form action='admin.php' method='post'><input type='text' name='kat_name_del' required> <br/ ><br/ > <input  type='submit'  value='Kategorie Löschen' name='loeschen' class='kasse' style='border: none;' >";
-                echo "<br/></form></center>";}*/
-
-
             //Bereich für das Anlegen von neuen Kategoreien
             if (isset($_GET['k']) && $_GET['k'] == 1) {
+
                 echo "<center>
                     <p><h2>Hier Können Sie Kategorien Anlegen!</h2></p></center></br >";
 
