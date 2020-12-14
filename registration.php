@@ -59,6 +59,7 @@
                 echo "<p style='color: red;'>Fehler: <br> Registrierung fehlgeschlagen! Versuche es erneut.</p>";
             }
             ?>
+            <!-- Formular zur Registartion der Nutzer -->
             <form action="registration.php" method="post">
                 <input type="text" name="mail" required placeholder="E-Mail" size="30">
                 <br>
@@ -68,7 +69,8 @@
                 <br>
                 <input type="text" name="fname" required placeholder="Vorname" size="30">
                 <br>
-                <input type="date" name="bdate" required placeholder="Geburtsdatum (YYYY-MM-DD)" size="30">
+                Geburtsdatum: <input type="date" name="bdate" required placeholder="Geburtsdatum (YYYY-MM-DD)"
+                    size="30">
                 <br>
                 <input type="text" name="postcode" required placeholder="Postleitzahl" size="30">
                 <br>

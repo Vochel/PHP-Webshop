@@ -11,12 +11,13 @@ session_start();
     <title>Kasse</title>
 
     <?php
+    //lädt Seite nur, falls Login ok und Type = User und Warenkorb gefüllt 
     if (
         isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" &&
         isset($_SESSION['warenkorb']) && $_SESSION['user_type'] = "user"
     ) {
 
-
+        //Array mit Useradresse
         $adresse = array();
 
         //Verbindung Datenbank
@@ -25,13 +26,14 @@ session_start();
         //Datenbank auswählen
         mysqli_select_db($connection, "webshop");
 
-        //Abfrage Text
+        //Abfrage Text für User-Nr
         $sql = "select * from user where user_nr='" . $_SESSION['user_nr'] . "'";
 
         //SQL-Abfrage
         $result = mysqli_query($connection, $sql);
 
         while ($dsatz = mysqli_fetch_assoc($result)) {
+            //schreibt alle Daten des Nutzers in Adress Array
             $adresse = $dsatz;
         }
 
@@ -49,6 +51,7 @@ session_start();
         <h1>Kasse</h1>
     </div>
 
+    <!-- Top-Navigation -->
     <div class="topnav">
         <a href="logout.php">Logout</a>
         <a href="warenkorb.php">Zum Warenkorb</a>
@@ -63,26 +66,31 @@ session_start();
 
             <?php
 
+            //falls geänderte Adresse in Cookie vorhanden --> nutze diese
             if (isset($_COOKIE['name']) || isset($_COOKIE['postcode']) || isset($_COOKIE['place']) || isset($_COOKIE['street']) || isset($_COOKIE['nr'])) {
                 echo "<p style='color: green;'>Wir haben uns deine vorherige Adresse gemerkt! Bitte prüfe sie erneut.</p>";
             }
 
             ?>
 
+            <!-- Bestellungs-Formular -->
             <form action="bestellung.php" method="post">
                 <table>
                     <tr>
                         <td>
+                            <!-- Auswahl, welche Adresse verwendet wird -->
                             <input type="radio" id="rechnung" name="adresse" value="gleich" required>
                             <label for="rechnung">Lieferadresse = Rechnungsadresse</label>
                         </td>
                         <td>
+                            <!-- Auswahl Bezahlmethode -->
                             <input type="radio" id="kreditkarte" name="adresse" value="geändert" required>
                             <label for="kreditkarte">andere Lieferadresse</label>
                         </td>
                     </tr>
                 </table>
 
+                <!-- Tabelle mit Adressdaten des Nutzers -->
                 <table border='1'>
                     <tr>
                         <td>Name an der Klingel</td>
@@ -132,6 +140,7 @@ session_start();
                 </table>
                 <br>
 
+                <!-- 'Auswahl der Zahlungsmethode' -->
                 <h3>Wähle eine Zahlungsmethode:</h3>
                 <table>
                     <tr>
@@ -154,6 +163,7 @@ session_start();
                     </tr>
                 </table>
                 <br>
+                <!-- Bestell-Btn -->
                 <input class="kasse" style="border: none;" type="submit" value="Kostenpflichtig bestellen">
             </form>
         </center>

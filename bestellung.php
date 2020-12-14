@@ -23,13 +23,6 @@ session_start();
             setcookie("street", $_POST['street'], time() + 9999999);
             setcookie("nr", $_POST['nr'], time() + 9999999);
         }
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
 
         //falls Login nicht ok, oder Warenkorb leer, oder Nicht Type User --> Redirect zum Login
     } else {
