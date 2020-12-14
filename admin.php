@@ -472,7 +472,7 @@ session_start();
                 //Hier erfolgt die Erstellung des formulars zum Ändern
                 echo "<center>
                 
-                <p><h2>Hier Können Sie Produkte Anlegen!</h2></p></center></br >";
+                <p><h2>Hier Können Sie Produkte aktualisieren!</h2></p></center></br >";
 
                 echo "<center>Geben Sie den Namen des zu ändernden Produkts an.<br/><br/><form action='admin.php' method='post'><input type='text' name='prod_name' required><br/><br/>";
                 echo "Geben sie den neuen Namen des Produktes an.<br/><br/><input type='text' name='prod_name_neu' required><br/><br/>";
