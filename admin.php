@@ -216,6 +216,7 @@ session_start();
             }
             mysqli_close($connection);
             header("Refresh:0");
+
             //Kategorie erstellen
         } elseif (isset($_POST['erstellen'])) {
             //Datenbank auswählen
@@ -229,6 +230,7 @@ session_start();
 
             //Ende der Abfrage
             mysqli_close($connection);
+            header("Refresh:0");
 
             //Kategorie bearbeiten
         } elseif (isset($_POST['kat_bearbeiten'])) {
@@ -248,6 +250,8 @@ session_start();
             mysqli_close($connection);
             $_SESSION["kategorie"] = $_POST["kat_name_neu"];
             header("Refresh:0");
+
+
             //-------------------------------------------------------------------------------------
             //Aendern der Produkte
             //Produkt loeschen
@@ -264,6 +268,7 @@ session_start();
 
             mysqli_close($connection);
             header("Refresh:0");
+
             //Produkt erstellen
         } elseif (isset($_POST['p_erstellen'])) {
             mysqli_close($connection);
@@ -289,6 +294,9 @@ session_start();
             echo $num;
 
             mysqli_close($connection);
+            header("Refresh:0");
+
+            //Produkt bearbeiten
         } elseif (isset($_POST['p_bearbeiten'])) {
             //Datenbank auswählen
             mysqli_select_db($connection, "webshop");
@@ -309,6 +317,7 @@ session_start();
             echo $num;
 
             mysqli_close($connection);
+            header("Refresh:0");
         }
     } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "user") {
         header("Location: home.php");
@@ -397,11 +406,9 @@ session_start();
                     echo "<td>" . bewertung($prods['Pr_Nummer'], $ratings) . "</td></tr>";
                 }
 
-
-                echo "</table><br>";
-
                 echo "</form>";
-
+                //Anlegen der Buttons, welche die Formulare laden, welche zum Löschen/ Bearbeiten von Kategorien und zum Löschen von Produkten genutzt werden
+                echo "</table><br>";
                 echo "<table><form action='admin.php'  method='post'>";
                 echo "<tr><td><input  type='submit' name='bearbeiten' value='Kategorie Löschen' class='kasse' style='border: none;'></td>";
 
@@ -414,6 +421,7 @@ session_start();
                 echo "<center><p>Es sind noch keine Produkte in dieser Kategorie vorhanden!</p></center>";
             }
 
+            //Anlegen der Formulare, welche zum Löschen/ Bearbeiten von Kategorien und zum Löschen von Produkten genutzt werden
             if (isset($_POST['bearbeiten']) && $_POST["bearbeiten"] == "Kategorie Aktualisieren") {
 
                 echo "<center>Geben sie den neuen Namen der Kategorie an.<br/><br/>";
@@ -428,8 +436,7 @@ session_start();
                 produkte($products);
             }
 
-
-
+            //Anlegen der Formulare, welche die Erstellung von Kategorien und Produkten und das Bearbeiten von Produkten ermöglichen
             //Bereich für das Anlegen von neuen Kategoreien
             if (isset($_GET['k']) && $_GET['k'] == 1) {
 
@@ -441,26 +448,10 @@ session_start();
                 echo "<form action='admin.php' method='post'><input type='text' name='new_kat_name' required><br/><br/><input  type='submit'  value='Kategorie erstellen' name='erstellen' class='kasse' style='border: none;'>";
                 echo "<br/></form></center>";
 
-                //Bereich für das bearbeiten eines bereits existierenden Kategorie
-
-
-
-
-                //-----------------------------------------------------------------------------------------------------------------------------------
-
-                //Sollte ein Produkt geändert weden erfolgt dies im Nachfolgenden Bereich
-                /* } elseif (isset($_GET['k']) && $_GET['k'] == 4) {
-                echo "<center>
-                    <p><h2>Hier Können Sie Produkte Löschen!</h2></p></center></br >";
-
-                echo "<center>Geben Sie das zu löschende Produkt an.<br/><br/>";
-
-                echo "<form action='admin.php' method='post'><input type='text' name='prod_name_del' required> <br/ ><br/ > <input  type='submit'  value='Produkt Löschen' name='p_loeschen' class='kasse' style='border: none;' >";
-                echo "<br/></form></center>";*/
-
 
                 //Bereich für das Anlegen von neuen Produkten
             } elseif (isset($_GET['k']) && $_GET['k'] == 2) {
+                //Hier erfolgt die Erstellung eines Formulars zum Anlegen neuer Produkte
                 echo "<center>
                     <p><h2>Hier Können Sie Produkte Anlegen!</h2></p></center></br >";
 
@@ -468,7 +459,7 @@ session_start();
 
                 echo "Geben Sie den Preis des neuen Produktes an <br/><br/><input type='number' name='price' min='0' value='0' step='.01'required><br/><br/>";
 
-                //--------------------------test---------------------
+                //Befüllen des Dropdown Menüs
                 echo "Geben Sie die Kategorie des neuen Produktes an <br/><br/><select name='sel_cat'>";
                 foreach ($kategorien_fill as $var => $key) {
 
@@ -479,21 +470,16 @@ session_start();
                     }
                 }
 
-
-
                 echo "</select></br></br>";
-                //---------------------test_ende---------------------
-
-
-
-
                 echo "Geben Sie die Herkunft des neuen Produkts an.<br/><br/><input type='text' name='new_prod_origin' required><br/><br/>";
                 echo "Geben Sie das Verfallsdatum des neuen Produktes an<br/><br/> <input type='date' name='exp_date'><br/><br/><input  type='submit'  value='Produkt erstellen' name='p_erstellen' class='kasse' style='border: none;'><br/></form></center>";
 
 
                 //Bereich für das bearbeiten eines bereits existierenden Produktes
             } elseif (isset($_GET['k']) && $_GET['k'] == 3) {
+                //Hier erfolgt die Erstellung des formulars zum Ändern
                 echo "<center>
+                
                 <p><h2>Hier Können Sie Produkte Anlegen!</h2></p></center></br >";
 
                 echo "<center>Geben Sie den Namen des zu ändernden Produkts an.<br/><br/><form action='admin.php' method='post'><input type='text' name='prod_name' required><br/><br/>";
@@ -501,7 +487,7 @@ session_start();
 
                 echo "Geben Sie den neuen Preis des Produktes an <br/><br/><input type='number' name='change_price' min='0' value='0' step='.01'required><br/><br/>";
 
-                //--------------------------test---------------------
+                //Befüllen des Dropdown Menüs
                 echo "Geben Sie neue die Kategorie des Produktes an <br/><br/><select name='sel_cat_new'>";
                 foreach ($kategorien_fill as $var => $key) {
 
@@ -512,8 +498,6 @@ session_start();
                     }
                 }
                 echo "</select></br></br>";
-                //---------------------test_ende---------------------
-
                 echo "Geben Sie die geänderte Herkunft des Produkts an.<br/><br/><input type='text' name='change_prod_origin' required><br/><br/>";
                 echo "Geben Sie das neue Verfallsdatum des Produktes an<br/><br/> <input type='date' name='change_exp_date'><br/><br/><input  type='submit'  value='Produkt Bearbeiten' name='p_bearbeiten' class='kasse' style='border: none;'><br/></form></center>";
             }
