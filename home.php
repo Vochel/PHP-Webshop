@@ -153,25 +153,6 @@ session_start();
             return $ergebnis;
         }
 
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($kategorien);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($products);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($ratings);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
 
         //falls Admin, redirect auf Admin Seite
     } elseif (isset($_SESSION['name']) && isset($_SESSION['login']) && $_SESSION['login'] == "ok" && $_SESSION['user_type'] == "admin") {
@@ -235,7 +216,7 @@ session_start();
                         //füllt Produkte Array
                         $prods[$key] = $value;
                     }
-                    echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . "</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td>";
+                    echo "<tr><td> " . $prods['name'] . " </td><td> " . $prods['origin'] . "</td><td> " . $prods['price'] . " €</td><td> <input type ='text' name='" . $prods['Pr_Nummer'] . "' placeholder='0'></td>";
                     echo "<td>" . bewertung($prods['Pr_Nummer'], $ratings) . "</td></tr>";
                 }
 

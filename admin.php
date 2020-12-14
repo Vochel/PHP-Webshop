@@ -173,28 +173,6 @@ session_start();
             return $ergebnis;
         }
 
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($kategorien);
-        // echo "</pre>";
-        // echo "<pre>";
-        // print_r($kategorien_fill);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($products);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($ratings);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
 
         /**BEARBEITUNG VON KATEGORIEN UND PRODUKTEN
              KATEGORIEN
@@ -206,7 +184,7 @@ session_start();
             mysqli_select_db($connection, "webshop");
 
             //Abfrage vorbereitung
-            $sql = "delete from kategorie where name='" . $_SESSION["kategorie"] . "'";
+            $sql = "delete from kategorie where Nummer='" . $_SESSION["kat_nr"] . "'";
 
             $result = mysqli_query($connection, $sql);
 
@@ -215,6 +193,8 @@ session_start();
                 $_GET["e"] = 1;
             }
             mysqli_close($connection);
+            unset($_SESSION['kategorie']);
+            unset($_SESSION['kat_nr']);
             header("Refresh:0");
 
             //Kategorie erstellen
@@ -417,8 +397,20 @@ session_start();
                 echo "<td><input  type='submit' name='bearbeiten' value='Produkt Löschen' class='kasse' style='border: none;'></form></td></tr>";
 
                 echo "</table><br/><br/>";
-            } elseif (empty($products) && !isset($_GET["k"])) {
+            } elseif (empty($products) && !isset($_GET["k"]) && (isset($_POST["kategorie"]) || isset($_SESSION["kategorie"]))) {
                 echo "<center><p>Es sind noch keine Produkte in dieser Kategorie vorhanden!</p></center>";
+
+                echo "<center><table><form action='admin.php'  method='post'>";
+                echo "<tr><td><input  type='submit' name='bearbeiten' value='Kategorie Löschen' class='kasse' style='border: none;'></td>";
+
+                echo "<td><input  type='submit' name='bearbeiten' value='Kategorie Aktualisieren'  class='kasse' style='border: none;'></td></tr>";
+
+                echo "</table><br/><br/></center>";
+            } elseif (empty($products) && !isset($_GET["k"]) && !isset($_POST["kategorie"]) && !isset($_SESSION["kategorie"])) {
+                echo "<center><span class='material-icons'>
+                        error_outline
+                    </span>
+                    <p>Wähle eine Kategorie!</p></center>";
             }
 
             //Anlegen der Formulare, welche zum Löschen/ Bearbeiten von Kategorien und zum Löschen von Produkten genutzt werden

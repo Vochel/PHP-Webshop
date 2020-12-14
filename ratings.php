@@ -157,23 +157,6 @@ session_start();
 
         //Verbindung schließen
         mysqli_close($connection);
-
-        // echo "<pre>";
-        // print_r($_SESSION);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($task);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($products);
-        // echo "</pre>";
-
     } else {
         header("Location: login.php");
     }

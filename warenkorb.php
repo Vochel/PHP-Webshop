@@ -37,10 +37,6 @@ session_start();
             }
         }
 
-        // echo "<pre>";
-        // print_r($products);
-        // echo "</pre>";
-
 
         //Verbindung trennen
         mysqli_close($connection);

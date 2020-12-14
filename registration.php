@@ -68,7 +68,7 @@
                 <br>
                 <input type="text" name="fname" required placeholder="Vorname" size="30">
                 <br>
-                <input type="text" name="bdate" required placeholder="Geburtsdatum (YYYY-MM-DD)" size="30">
+                <input type="date" name="bdate" required placeholder="Geburtsdatum (YYYY-MM-DD)" size="30">
                 <br>
                 <input type="text" name="postcode" required placeholder="Postleitzahl" size="30">
                 <br>
